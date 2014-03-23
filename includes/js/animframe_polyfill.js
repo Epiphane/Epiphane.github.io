@@ -1,3 +1,7 @@
+/*
+    Credit to Gabriele Cirulli (gabrielecirulli.github.io/2048/) For this one.
+*/
+
 (function() {
   var lastTime = 0;
   var vendors = ['webkit', 'moz'];
@@ -7,7 +11,7 @@
     window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
   }
 
-  if (!window.requestAnimationFrame) {
+  //if (!window.requestAnimationFrame) {
     window.requestAnimationFrame = function(callback, element) {
       var currTime = new Date().getTime();
       var timeToCall = Math.max(0, 16 - (currTime - lastTime));
@@ -16,7 +20,7 @@
       lastTime = currTime + timeToCall;
       return id;
     };
-  }
+  //}
 
   if (!window.cancelAnimationFrame) {
     window.cancelAnimationFrame = function(id) {

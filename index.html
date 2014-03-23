@@ -8,65 +8,28 @@
 <body>
   <div class="container">
     <div class="heading">
-      <h1 class="title">Pipes</h1>
+      <h1 class="title">Life</h1>
     </div>
-    <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
+    <p class="game-intro">Mess around with Conway's <strong>Game of Life!</strong></p>
+
+    <a class="go-button">Go</a>
 
     <div class="game-container">
-      <div class="game-message">
-        <p></p>
-        <div class="lower">
-	        <a class="keep-playing-button">Keep going</a>
-          <a class="retry-button">Try again</a>
-          <div class="score-sharing"></div>
-        </div>
-      </div>
-
       <div class="grid-container">
-        <div class="grid-row-short">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
-        <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
-        <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
-        <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
-        <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
-        <div class="grid-row-short">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
       </div>
-
-      <div class="tile-container"><div class="tile tile-2 tile-position-3-2 tile-new"><div class="tile-inner">2</div></div><div class="tile tile-2 tile-position-4-4 tile-new"><div class="tile-inner">2</div></div></div>
     </div>
 
     <hr>
     <p>
-    Created by <a href="http://thomassteinke.net/" target="_blank">Thomas Steinke.</a> Inspired by <a href="gabrielecirulli.github.io/2048/" target="_blank">2048 by Gabriele Cirulli</a>.
+    Created by <a href="http://thomassteinke.net/" target="_blank">Thomas Steinke</a>.
     </p>
   </div>
+
+  <script type="text/javascript" src="./includes/js/jquery.min.js"></script>
+  <script type="text/javascript" src="./includes/js/animframe_polyfill.js"></script>
+  <script type="text/javascript" src="./includes/js/cell.js"></script>
+  <script type="text/javascript" src="./includes/js/grid.js"></script>
+  <script type="text/javascript" src="./includes/js/game_manager.js"></script>
+  <script type="text/javascript" src="./includes/js/keyboard_input_manager.js"></script>
+  <script type="text/javascript" src="./includes/js/application.js"></script>
 </body></html>

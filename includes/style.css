@@ -9,3 +9,286 @@ html, body {
   font-size: 18px;
 }
 
+body {
+  margin: 60px 0;
+}
+
+.container {
+  width: 500px;
+  margin: 0 auto;
+}
+
+.heading:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+h1.title {
+  font-size: 72px;
+  float: left;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 10px;
+  line-height: 1.65;
+}
+
+a {
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.go-button {
+  margin-top: 25px;
+  display: inline-block;
+  background: #8f7a66;
+  border-radius: 3px;
+  text-decoration: none;
+  color: #f9f6f2;
+  height: 40px;
+  line-height: 42px;
+
+  text-align: center;
+  width: 500px;
+}
+
+.game-container {
+  margin-top: 2px;
+  padding: 7px;
+  border-radius: 5px;
+  cursor: default;
+  width: 486px;
+  height: 486px;
+  background: #408DD2;
+
+  position: relative;
+}
+
+.grid-container {
+  position: absolute;
+}
+
+.grid-row {
+  margin-bottom: 5px;
+}
+
+.grid-row:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.grid-row:last-child {
+  margin-bottom: 0;
+}
+
+.grid-cell {
+  margin-right: 5px;
+  width: 30px;
+  height: 30px;
+  background: rgba(238, 228, 218, 0.35);
+  border-radius: 5px;
+  float: left;
+}
+
+.grid-cell:last-child {
+  margin-right: 0;
+}
+
+.grid-cell-new {
+  -webkit-animation: appear 200ms ease 100ms;
+  -moz-animation: appear 200ms ease 100ms;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+}
+
+@-webkit-keyframes appear {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+  }
+}
+
+@-moz-keyframes appear {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+  }
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+  }
+}
+
+.grid-cell-active-flip {
+  -webkit-animation: fillActive 200ms;
+  -moz-animation: fillActive 200ms;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+  -webkit-animation-direction: alternate;
+  -moz-animation-direction: alternate;
+}
+
+.grid-cell-inactive-flip {
+  -webkit-animation: fillActive 200ms reverse;
+  -moz-animation: fillActive 200ms reverse;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+  -webkit-animation-play-state: running;
+  -webkit-animation-delay: 0s;
+}
+
+@-webkit-keyframes fillActive {
+  0% {
+    -webkit-transform: scaleX(1);
+    -moz-transform: scaleX(1);
+  }
+
+  50% {
+    -webkit-transform: scaleX(0);
+    -moz-transform: scaleX(0);
+    background: rgba(238, 228, 218, 0.35);
+  }
+
+  51% {
+    -webkit-transform: scaleX(0);
+    -moz-transform: scaleX(0);
+    background: rgba(238, 228, 218, 0.95);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: scaleX(1);
+    -moz-transform: scaleX(1);
+    background: rgba(238, 228, 218, 0.95);
+  }
+}
+
+@-moz-keyframes fillActive {
+  0% {
+    -webkit-transform: scaleX(1);
+    -moz-transform: scaleX(1);
+    background: rgba(238, 228, 218, 0.35);
+  }
+
+  50% {
+    -webkit-transform: scaleX(0);
+    -moz-transform: scaleX(0);
+    background: rgba(238, 228, 218, 0.35);
+  }
+
+  51% {
+    -webkit-transform: scaleX(0);
+    -moz-transform: scaleX(0);
+    background: rgba(238, 228, 218, 0.95);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: scaleX(1);
+    -moz-transform: scaleX(1);
+    background: rgba(238, 228, 218, 0.95);
+  }
+}
+
+@keyframes fillActive {
+  0% {
+    -webkit-transform: scaleX(1);
+    -moz-transform: scaleX(1);
+    background: rgba(238, 228, 218, 0.35);
+  }
+
+  50% {
+    -webkit-transform: scaleX(0);
+    -moz-transform: scaleX(0);
+    background: rgba(238, 228, 218, 0.35);
+  }
+
+  51% {
+    -webkit-transform: scaleX(0);
+    -moz-transform: scaleX(0);
+    background: rgba(238, 228, 218, 0.95);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: scaleX(1);
+    -moz-transform: scaleX(1);
+    background: rgba(238, 228, 218, 0.95);
+  }
+}
+
+.grid-cell-active-fade {
+  -webkit-animation: fadeActive 100ms;
+  -moz-animation: fadeActive 100ms;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+  -webkit-animation-direction: alternate;
+  -moz-animation-direction: alternate;
+}
+
+.grid-cell-inactive-fade {
+  -webkit-animation: fadeActive 100ms reverse;
+  -moz-animation: fadeActive 100ms reverse;
+  -webkit-animation-fill-mode: both;
+  -moz-animation-fill-mode: both;
+  -webkit-animation-play-state: running;
+  -webkit-animation-delay: 0s;
+}
+
+@-webkit-keyframes fadeActive {
+  0% {
+    background: rgba(238, 228, 218, 0.35);
+  }
+
+  100% {
+    background: rgba(238, 228, 218, 0.95);
+  }
+}
+
+@-moz-keyframes fadeActive {
+  0% {
+    background: rgba(238, 228, 218, 0.35);
+  }
+
+  100% {
+    background: rgba(238, 228, 218, 0.95);
+  }
+}
+
+@keyframes fadeActive {
+  0% {
+    background: rgba(238, 228, 218, 0.35);
+  }
+
+  100% {
+    background: rgba(238, 228, 218, 0.95);
+  }
+}
