@@ -14,7 +14,7 @@ body {
 }
 
 .container {
-  width: 500px;
+  width: 760px;
   margin: 0 auto;
 }
 
@@ -60,7 +60,7 @@ a {
   padding: 7px;
   border-radius: 5px;
   cursor: default;
-  width: 486px;
+  width: 746px;
   height: 486px;
   background: #408DD2;
 
@@ -69,6 +69,39 @@ a {
 
 .grid-container {
   position: absolute;
+}
+
+.program-drawer {
+  width: 255px;
+  height: 486px;
+  border-radius: 5px;
+  float: right;
+  position: relative;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.program-drawer ul {
+  list-style-type: none;
+
+  padding: 0;
+  margin: 0;
+}
+
+.program-drawer li {
+  width: 235px;
+  height: 80px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+
+  background: rgba(238, 228, 218, 0.35);
+
+  padding: 10px;
+}
+
+.program-drawer li:last-child {
+  margin: 0;
 }
 
 .grid-row {
