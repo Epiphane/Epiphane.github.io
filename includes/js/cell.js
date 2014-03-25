@@ -34,6 +34,24 @@ GridCell.prototype.toggle = function(click) {
    $(this.tile).mouseenter(function() { self.grid.hover(self.position); });
 }
 
+GridCell.prototype.appear = function() {
+   this.tile.classList.add("grid-cell-new")
+   this.tile.classList.remove("grid-cell-die")
+
+   var newTile = this.tile.cloneNode(true)
+   this.tile.parentNode.replaceChild(newTile, this.tile)
+   this.tile = newTile;
+}
+
+GridCell.prototype.disappear = function() {
+   this.tile.classList.remove("grid-cell-new")
+   this.tile.classList.add("grid-cell-die")
+
+   var newTile = this.tile.cloneNode(true)
+   this.tile.parentNode.replaceChild(newTile, this.tile)
+   this.tile = newTile;
+}
+
 GridCell.prototype.setHover = function(hover) {
    if(hover == this.hover)
       return false;

@@ -50,6 +50,73 @@ Grid.prototype.eachCell = function (callback) {
    }
 };
 
+Grid.prototype.runProgram = function(step) {
+   if(step == 0) {
+      this.disappear();
+      return;
+   }
+
+   var self = this;
+
+   window.requestAnimationFrame(function() {
+      var changed = self.iterate()
+
+      if(changed) {
+         return self.runProgram(step - 1)
+      }
+      else
+         this.disappear();
+   });
+}
+
+Grid.prototype.appear = function() {
+   var self = this;
+
+   setTimeout(function() {
+      $(".program-back").fadeIn();
+      $(".program-drawer").fadeIn();
+      for(var row = 0; row < self.size * 2; row ++) {
+         self.showDiagonal(row)
+      }
+   }, 500);
+}
+
+Grid.prototype.showDiagonal = function(row) {
+   var self = this;
+
+   window.requestAnimationFrame(function() {
+      for(var col = 0; col < self.size && row >= 0; row -- && col ++) {
+         if (row < self.size) {
+            self.cells[row][col].appear()
+         }
+      }
+   });
+}
+
+Grid.prototype.disappear = function() {
+   var self = this;
+
+   setTimeout(function() {
+      $(".program-back").fadeOut();
+      $(".program-drawer").fadeOut();
+      for(var row = 0; row < self.size * 2; row ++) {
+         self.hideDiagonal(row)
+      }
+   }, 500);
+}
+
+Grid.prototype.hideDiagonal = function(row) {
+   var self = this;
+
+   window.requestAnimationFrame(function() {
+      for(var col = 0; col < self.size && row >= 0; row -- && col ++) {
+         if (row < self.size) {
+            self.cells[row][col].disappear()
+         }
+      }
+   });
+}
+
 Grid.prototype.iterate = function() {
    var self = this;
 
@@ -80,6 +147,14 @@ Grid.prototype.iterate = function() {
    this.programs.forEach(function(program) {
       program.testValid();
    });
+
+   var changed = false;
+   this.eachCell(function(x, y, cell) {
+      if(cell.wasActive != cell.active)
+         changed = true;
+   });
+
+   return changed;
 }
 
 Grid.prototype.hover = function(position) {

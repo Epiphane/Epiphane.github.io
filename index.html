@@ -13,13 +13,14 @@
     </div>
     <p class="game-intro">Mess around with Conway's <strong>Game of Life!</strong></p>
 
-    <a class="go-button">Take a step (or press/hold space)</a>
-
     <div class="game-container">
       <div class="grid-container">
       </div>
       <div class="program-drawer" ng-controller="ProgramCtrl">
         <ul>
+          <li class="run-button">
+            <span>Run Program</span>
+          </li>
           <li class="program {{attr(program.selected, 'selected', '')}}" ng-repeat="program in programs" ng-click="select(this)">
             <div class="grid-picture grid-picture-{{gridSize(program)}}">
               <div class="grid-row" ng-repeat="row in program.map">
