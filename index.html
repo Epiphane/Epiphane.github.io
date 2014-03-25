@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html ng-app><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <title>Pipes</title>
 
   <link href="./includes/style.css" rel="stylesheet" type="text/css">
+  <script src="./includes/js/angular.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -17,40 +18,18 @@
     <div class="game-container">
       <div class="grid-container">
       </div>
-      <div class="program-drawer">
+      <div class="program-drawer" ng-controller="ProgramCtrl">
         <ul>
-          <li class="program">
-            A
-          </li>
-          <li class="program">
-            B
-          </li>
-          <li class="program">
-            C
-          </li>
-          <li class="program">
-            D
-          </li>
-          <li class="program">
-            E
-          </li>
-          <li class="program">
-            F
-          </li>
-          <li class="program">
-            G
-          </li>
-          <li class="program">
-            H
-          </li>
-          <li class="program">
-            I
-          </li>
-          <li class="program">
-            J
-          </li>
-          <li class="program">
-            K
+          <li class="program {{attr(program.selected, 'selected', '')}}" ng-repeat="program in programs" ng-click="select(this)">
+            <div class="grid-picture grid-picture-{{gridSize(program)}}">
+              <div class="grid-row" ng-repeat="row in program.map">
+                <div class="grid-cell {{attr(cell, 'grid-cell-active-flip', 'grid-cell-inactive')}}" ng-repeat="cell in row">
+                </div>
+              </div>
+            </div>
+            <div class="title">{{program.name}} </div>
+            <div class="description">{{program.description}}</div>
+            <span class="badge">{{program.required}}</span>
           </li>
         </ul>
       </div>
@@ -62,10 +41,12 @@
     </p>
   </div>
 
+  <script type="text/javascript" src="./includes/js/program.js"></script>
   <script type="text/javascript" src="./includes/js/jquery.min.js"></script>
   <script type="text/javascript" src="./includes/js/animframe_polyfill.js"></script>
   <script type="text/javascript" src="./includes/js/cell.js"></script>
   <script type="text/javascript" src="./includes/js/grid.js"></script>
+  <script type="text/javascript" src="./includes/js/program_wrapper.js"></script>
   <script type="text/javascript" src="./includes/js/game_manager.js"></script>
   <script type="text/javascript" src="./includes/js/keyboard_input_manager.js"></script>
   <script type="text/javascript" src="./includes/js/application.js"></script>
