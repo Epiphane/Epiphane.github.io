@@ -119,8 +119,8 @@ PlayerBullet.prototype.update = function() {
       this.world.removeObject(this);
    else {
       this.world.eachObject(function(obj) {
-         if(self.position.x + self.size.w + 0.5 > obj.position.x && self.position.y + self.size.h + 0.5 > obj.position.y &&
-             self.position.x < obj.position.x + obj.size.w + 0.5 && self.position.y < obj.position.y + obj.size.h + 0.5) {
+         if(self.position.x + self.size.w > obj.position.x && self.position.y + self.size.h > obj.position.y &&
+             self.position.x < obj.position.x + obj.size.w && self.position.y < obj.position.y + obj.size.h) {
             var shot = obj.getShot();
 
             if(shot > 0)

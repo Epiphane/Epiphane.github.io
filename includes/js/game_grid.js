@@ -24,6 +24,8 @@ function GameGrid(width, height, gameManager, attrs, keys) {
    this.cells = [];
    this.build();
 
+   $(".in-game-instructions").slideDown()
+
    if(!this.attrs[VISIBLE])
       document.querySelector(".shooter-tile-container").style.setProperty("opacity", "0.2")
    else

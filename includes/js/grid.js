@@ -6,6 +6,7 @@ function Grid(size) {
 
    this.build();
 
+   $(".in-game-instructions").slideUp()
    $(".clear-button").click(function() { self.build(self) })
 }
 
@@ -89,6 +90,7 @@ Grid.prototype.appear = function() {
       for(var row = 0; row < self.size * 2; row ++) {
          self.showDiagonal(row)
       }
+      $(".in-game-instructions").slideUp()
    }, 500);
 }
 
@@ -234,7 +236,7 @@ Grid.prototype.placeProgram = function(position) {
       angular.element($(".program-drawer")).scope().$apply()
    }
    else {
-      this.cells[position.y][position.x].toggle(true);
+      //this.cells[position.y][position.x].toggle(true);
    }
 }
 
