@@ -96,7 +96,7 @@ a {
     width: 728px;
   }
     .shooter-grid-container .grid-row {
-      height: 12px;
+      height: 25px;
       margin-bottom: 2px;
       clear:both;
     }
@@ -105,8 +105,8 @@ a {
     .shooter-tile-container .grid-cell {
       float: right;
       margin-right: 0;
-      width: 12px;
-      height: 12px;
+      width: 25px;
+      height: 25px;
       border-radius: 1px;
       margin-left: 2px;
     }

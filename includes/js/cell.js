@@ -12,8 +12,8 @@ function GridCell(grid, position, crucial) {
 
    this.tile = document.createElement("div");
    this.tile.setAttribute("class", "grid-cell grid-cell-dynamic grid-cell-new");
-   if(this.crucial = crucial)
-      this.tile.classList.add("grid-cell-crucial")
+   //if(this.crucial = crucial)
+      //this.tile.classList.add("grid-cell-crucial")
 
    $(this.tile).click(function() { grid.placeProgram(position); });
    $(this.tile).mouseenter(function() { grid.hover(position); });

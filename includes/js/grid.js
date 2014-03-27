@@ -194,7 +194,7 @@ Grid.prototype.hover = function(position) {
       for(var row = py; row < py + height; row ++) {
          for(var col = px; col < px + width; col ++) {
             if(col >= 0 && row >= 0 &&
-                row < this.size && col < this.size && row != 2) {
+                row < this.size && col < this.size) {
                this.cells[row][col].setHover(this.program.map[row - py][col - px] + 1);
             }
          }
@@ -215,7 +215,7 @@ Grid.prototype.placeProgram = function(position) {
       var cellsToWatch = [];
       for(var row = py; row < py + height; row ++) {
          for(var col = px; col < px + width; col ++) {
-            if(!this.cells[row][col].active && this.program.map[row - py][col - px] && row != 2)
+            if(!this.cells[row][col].active && this.program.map[row - py][col - px])
                this.cells[row][col].toggle(true);
             else
                this.cells[row][col].setHover(0);

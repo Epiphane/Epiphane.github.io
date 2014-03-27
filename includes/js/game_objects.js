@@ -8,7 +8,7 @@ function GameObject(position, world) {
    if(!position)
       position = {x: 0, y: 0};
 
-   this.size = {w: 2, h: 2};
+   this.size = {w: 1, h: 1};
 
    this.position = position;
    this.initDiv(position);
@@ -22,7 +22,7 @@ GameObject.prototype.initDiv = function(position) {
 }
 
 GameObject.prototype.updatePosition = function(position) {
-   var TILE_WIDTH = 14
+   var TILE_WIDTH = 28
 
    this.position = {x: position.x, y: position.y};
    this.div.classList.remove(this.positionAttr);
@@ -39,8 +39,8 @@ GameObject.prototype.updatePosition = function(position) {
 GameObject.prototype.move = function(direction) {
    var newPos = this.position;
 
-   newPos.x += direction.x / 2;
-   newPos.y += direction.y / 2;
+   newPos.x += direction.x / 4;
+   newPos.y += direction.y / 4;
 
    if(newPos.x < 1)
       newPos.x = 1;
