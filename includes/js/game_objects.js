@@ -141,6 +141,7 @@ BasicEnemy.prototype.constructor = BasicEnemy;
 function BasicEnemy(position, world, slow) {
    this.world = world;
    this.health = 2;
+   this.damage = 50;
    this.initDiv(position);
    this.updatePosition(position)
 
@@ -156,7 +157,7 @@ BasicEnemy.prototype.update = function() {
       this.move({x: -1, y: 0})
 
    if(this.position.x == 1) {
-      this.world.takeAHit(200);
+      this.world.takeAHit(this.damage);
       this.world.removeObject(this, true);
    }
 }
@@ -176,6 +177,7 @@ Corrupter.prototype.constructor = Corrupter;
 function Corrupter(position, world, slow) {
    this.world = world;
    this.health = 2;
+   this.damage = 10;
    this.initDiv(position);
    this.updatePosition(position)
 
