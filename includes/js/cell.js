@@ -6,6 +6,7 @@ function GridCell(grid, position, element) {
 
    this.active = false;
    this.wasActive = false;
+   this.activeBeforeWas = false;
    this.hover = 0;
 
    this.grid = grid;

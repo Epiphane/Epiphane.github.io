@@ -33,6 +33,11 @@ a {
   cursor: pointer;
 }
 
+strong {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 .heading:after {
   content: "";
   display: block;
@@ -73,7 +78,7 @@ a {
   border-radius: 5px;
   cursor: default;
   width: 730px;
-  height: 486px;
+  height: 490px;
   background: #408DD2;
   position: relative;
 }
@@ -139,8 +144,8 @@ a {
 
       .grid-cell {
         margin-right: 5px;
-        width: 30px;
-        height: 30px;
+        width: 50px;
+        height: 50px;
         background: rgba(238, 228, 218, 0.35);
         border-radius: 5px;
         float: left;
@@ -198,7 +203,7 @@ a {
         }
   .program-drawer {
     width: 235px;
-    height: 470px;
+    height: 490px;
     border-radius: 5px;
     float: right;
     position: relative;
@@ -210,15 +215,22 @@ a {
       padding: 0;
       margin: 0;
     }
+      .program-drawer .clear-button {
+        background: #BBBBBB;
+        font-size: 26px;
+        text-align: center;
+        line-height: 30px;
+        height: 30px;
+      }
       .program-drawer .run-button {
         background: #60D6a9;
         font-size: 32px;
         text-align: center;
-        line-height: 80px;
+        line-height: 85px;
       }
       .program-drawer li {
         width: 215px;
-        height: 80px;
+        height: 85px;
         margin-bottom: 5px;
         border-radius: 5px;
         background: rgba(238, 228, 218, 0.35);

@@ -8,7 +8,16 @@ function ProgramCtrl($scope) {
       {id: 1, name: 'Tim.er', description: 'Realtime Movement', selected: false, required: 3,
          map: [[0, 1, 0],
                [0, 1, 0],
-               [0, 1, 0]]}];
+               [0, 1, 0]]},
+      {id: 2, name: 'Sp.read', description: 'Bullet Spread', selected: false, required: 4,
+         map: [[0, 1, 0],
+               [0, 0, 1],
+               [1, 1, 1]]},
+      {id: 3, name: 'Gl.ue', description: 'Slower Enemies', selected: false, required: 6,
+         map: [[0, 1, 1, 0],
+               [1, 0, 0, 1],
+               [0, 1, 1, 0],
+               [0, 0, 0, 0]]}];
 
    $scope.programSelectedCallback = function() { console.log("ow!") };
 

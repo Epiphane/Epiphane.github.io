@@ -4,7 +4,7 @@
 
 function GameGrid(width, height, gameManager, attrs, keys) {
    var VISIBLE = 0;
-   var REALTIME = 1;
+   var SPREAD = 2;
 
    var self = this;
    this.paused = false;
@@ -26,9 +26,11 @@ function GameGrid(width, height, gameManager, attrs, keys) {
 
    if(!this.attrs[VISIBLE])
       document.querySelector(".shooter-tile-container").style.setProperty("opacity", "0.2")
+   else
+      document.querySelector(".shooter-tile-container").style.setProperty("opacity", "1")
 
    window.requestAnimationFrame(function() {
-      self.ship = new PlayerShip({x: 1, y: 7}, self)
+      self.ship = new PlayerShip({x: 1, y: 7}, self, attrs[SPREAD])
       self.addObject(self.ship, false)
 
       self.update(keys)
@@ -40,8 +42,8 @@ GameGrid.prototype.pause = function() {
 }
 
 GameGrid.prototype.update = function(input) {
-   var VISIBLE = 0;
    var REALTIME = 1;
+   var SLOW_ENEMIES = 3;
    var self = this;
 
    window.requestAnimationFrame(function() {
@@ -50,7 +52,7 @@ GameGrid.prototype.update = function(input) {
 
       var delay = !self.attrs[REALTIME];
 
-      for(var x = 0; x < 3; x ++)
+      for(var x = 0; x < 5; x ++)
          if(self.cellsToKill.length > 0) {
             var cell = self.cellsToKill.shift();
             cell.parentNode.removeChild(cell)
@@ -85,7 +87,7 @@ GameGrid.prototype.update = function(input) {
       if(self.enemyTimer-- < 0) {
          self.enemyTimer = 100;
 
-         self.addObject(new BasicEnemy({x: self.width, y: Math.ceil(Math.random() * self.height)}, self), true)
+         self.addObject(new BasicEnemy({x: self.width, y: Math.ceil(Math.random() * self.height)}, self, self.attrs[SLOW_ENEMIES]), true)
       }
 
       self.update(input);
@@ -97,7 +99,7 @@ GameGrid.prototype.loseGame = function() {
    self.paused = true;
 
    window.requestAnimationFrame(function() {
-      for(var x = 0; x < 3; x ++)
+      for(var x = 0; x < 5; x ++)
          if(self.cellsToKill.length > 0) {
             var cell = self.cellsToKill.shift();
             cell.parentNode.removeChild(cell)

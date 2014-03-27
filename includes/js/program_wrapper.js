@@ -14,10 +14,10 @@ function ProgramWrapper(program, position, cells) {
    this.div = document.createElement("div")
    this.div.classList.add("program-back");
    this.div.classList.add("program-back-valid");
-   this.div.style.setProperty("top", (position.y * 35 + 3) + "px")
-   this.div.style.setProperty("left", (position.x * 35 + 3) + "px")
-   this.div.style.setProperty("width", (width * 35 - 1) + "px")
-   this.div.style.setProperty("height", (height * 35 - 1) + "px")
+   this.div.style.setProperty("top", (position.y * 55 + 3) + "px")
+   this.div.style.setProperty("left", (position.x * 55 + 3) + "px")
+   this.div.style.setProperty("width", (width * 55 - 1) + "px")
+   this.div.style.setProperty("height", (height * 55 - 1) + "px")
 
    var tagline = document.createElement("div")
    tagline.classList.add("tagline")
@@ -57,6 +57,10 @@ ProgramWrapper.prototype.testValid = function() {
 }
 
 ProgramWrapper.prototype.setAttribute = function(attributes) {
-   if(!attributes[this.program.id])
-      attributes[this.program.id] = this.valid;
+   if(this.valid) {
+      if(!attributes[this.program.id])
+         attributes[this.program.id] = 1;
+      else
+         attributes[this.program.id]++;
+   }
 }

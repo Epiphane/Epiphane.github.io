@@ -6,7 +6,9 @@ function GameObject(position, world) {
    this.world = world;
 
    if(!position)
-      position = {x: 0, y: 0}
+      position = {x: 0, y: 0};
+
+   this.size = {w: 1, h: 1};
 
    this.position = position;
    this.initDiv(position);
@@ -67,10 +69,11 @@ GameObject.prototype.getDiv = function() {
 PlayerShip.prototype = new GameObject();
 PlayerShip.prototype.constructor = PlayerShip;
 
-function PlayerShip(position, world) {
+function PlayerShip(position, world, spread) {
    this.world = world;
    this.shootDelay = 0;
    this.updatePosition(position)
+   this.spread = spread;
 
    this.div.classList.add("player-ship")
 }
@@ -80,11 +83,13 @@ PlayerShip.prototype.shoot = function() {
       var newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: 0})
       this.world.addObject(newBullet, true)
 
-//      newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: 1})
-//      this.world.addObject(newBullet, true)
-//
-//      newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: -1})
-//      this.world.addObject(newBullet, true)
+      if(this.spread) {
+         newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: 1})
+         this.world.addObject(newBullet, true)
+
+         newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: -1})
+         this.world.addObject(newBullet, true)
+      }
 
       this.shootDelay = 5;
    }
@@ -114,8 +119,8 @@ PlayerBullet.prototype.update = function() {
       this.world.removeObject(this);
    else {
       this.world.eachObject(function(obj) {
-         if(self.position.x + 0.5 >= obj.position.x && self.position.y + 0.5 >= obj.position.y &&
-             self.position.x <= obj.position.x + 0.5 && self.position.y <= obj.position.y + 0.5) {
+         if(self.position.x + self.size.w + 0.5 > obj.position.x && self.position.y + self.size.h + 0.5 > obj.position.y &&
+             self.position.x < obj.position.x + obj.size.w + 0.5 && self.position.y < obj.position.y + obj.size.h + 0.5) {
             var shot = obj.getShot();
 
             if(shot > 0)
@@ -132,20 +137,25 @@ PlayerBullet.prototype.update = function() {
 BasicEnemy.prototype = new GameObject();
 BasicEnemy.prototype.constructor = BasicEnemy;
 
-function BasicEnemy(position, world) {
+function BasicEnemy(position, world, slow) {
    this.world = world;
    this.health = 2;
    this.initDiv(position);
    this.updatePosition(position)
 
+   this.slow = slow;
+
    this.div.classList.add("basic-enemy-ship")
 }
 
 BasicEnemy.prototype.update = function() {
-   this.move({x: -0.5, y: 0})
+   if(this.slow)
+      this.move({x: -1 / (this.slow + 1), y: 0})
+   else
+      this.move({x: -1, y: 0})
 
    if(this.position.x == 1) {
-      this.world.takeAHit(200);
+      this.world.takeAHit(1200);
       this.world.removeObject(this);
    }
 }

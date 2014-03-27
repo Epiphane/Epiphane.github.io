@@ -31,6 +31,7 @@ GameManager.prototype.runProgram = function() {
 }
 
 GameManager.prototype.startShooter = function(attrs) {
+   $(".game-container").animate({"height": "292px"})
    this.shooterGrid = new GameGrid(52, 21, this, attrs, this.inputManager.keys);
 }
 

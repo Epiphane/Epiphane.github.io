@@ -1,15 +1,26 @@
 function Grid(size) {
-   this.size = size;
-   this.cells = [];
-   this.program = null;
+   var self = this;
    this.programs = [];
 
+   this.size = size;
+
    this.build();
+
+   $(".clear-button").click(function() { self.build(self) })
 }
 
 // Build a grid of the specified size
 Grid.prototype.build = function () {
+   this.cells = [];
+   this.program = null;
+   while(this.programs.length > 0) {
+      var div = this.programs.shift().getDiv();
+
+      div.parentNode.removeChild(div)
+   }
+
    var gridContainer = document.querySelector(".grid-container");
+   $(".grid-container").empty()
 
    for(var row = 0; row < this.size * 2; row ++) {
       if(row < this.size) {
@@ -35,7 +46,7 @@ Grid.prototype.buildDiagonal = function(row) {
             newTile = new GridCell(self, { x: col, y: row });
             self.cells[row].push(newTile)
 
-            $.find(".grid-row:eq("+row+")")[0].appendChild(newTile.getDiv());
+            $(".grid-container").find(".grid-row:eq("+row+")")[0].appendChild(newTile.getDiv());
          }
       }
    });
@@ -74,6 +85,7 @@ Grid.prototype.appear = function() {
    var self = this;
 
    setTimeout(function() {
+      $(".game-container").animate({"height": "490px"})
       $(".program-back").fadeIn();
       $(".program-drawer").fadeIn();
       for(var row = 0; row < self.size * 2; row ++) {
@@ -127,6 +139,7 @@ Grid.prototype.iterate = function() {
    var self = this;
 
    this.eachCell(function(x, y, cell) {
+      cell.activeBeforeWas = cell.wasActive;
       cell.wasActive = cell.active;
    });
 
@@ -154,13 +167,15 @@ Grid.prototype.iterate = function() {
       program.testValid();
    });
 
-   var changed = false;
+   var changed = 0;
    this.eachCell(function(x, y, cell) {
       if(cell.wasActive != cell.active)
-         changed = true;
+         changed |= 1;
+      if(cell.activeBeforeWas != cell.active)
+         changed |= 2;
    });
 
-   return changed;
+   return changed == 3;
 }
 
 Grid.prototype.hover = function(position) {
