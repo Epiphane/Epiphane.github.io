@@ -4,7 +4,8 @@
 
 function LevelManager() {
    this.levels = [
-      new Level([{enemy: BasicEnemy, delay: 100, amount: 1}])
+      new Level([{enemy: BasicEnemy, delay: 100, amount: 1}]),
+      new Level([{enemy: BasicEnemy, delay: 100, amount: 10}])
    ];
 
    this.currentLevel = 0;
@@ -23,5 +24,10 @@ function Level(waves) {
 }
 
 Level.prototype.getInfo = function() {
-   return {waves: this.waves};
+   waves = []
+   this.waves.forEach(function(wave) {
+      waves.push({enemy: wave.enemy, delay: wave.delay, amount: wave.amount});
+   })
+
+   return {waves: waves};
 }

@@ -35,12 +35,13 @@ function GameManager(size, InputManager, LevelManager, ProgramDrawer) {
 
    this.setup();
 
-   ProgramDrawer.programSelectedCallback = function(program) {
+   this.programDrawer = ProgramDrawer;
+   this.programDrawer.programSelectedCallback = function(program) {
       self.grid.program = program;
    };
 
-   ProgramDrawer.programs = this.availablePrograms;
-   ProgramDrawer.$apply();
+   this.programDrawer.programs = this.availablePrograms;
+   this.programDrawer.$apply();
 }
 
 // Set up the game
@@ -59,6 +60,25 @@ GameManager.prototype.runProgram = function() {
 GameManager.prototype.startShooter = function(attrs) {
    $(".game-container").animate({"height": "292px"})
    this.shooterGrid = new GameGrid(52, 21, this, attrs, this.inputManager.keys, this.levels.getCurrentLevel());
+}
+
+GameManager.prototype.wonLevel = function() {
+   this.levels.currentLevel++;
+   if(this.programs.length > 0)
+      this.availablePrograms.push(this.programs.shift())
+   this.programDrawer.$apply();
+   this.startProgrammer();
+   if(this.levels.currentLevel == this.levels.levels.length)
+      this.wonGame()
+}
+
+GameManager.prototype.wonGame = function() {
+   $(".game-message").fadeIn()
+   $(".see-program-button").click(function() {
+      $(".game-message").fadeOut()
+      $(".program-drawer").hide();
+      $(".game-container").animate({"width": "491px"})
+   })
 }
 
 GameManager.prototype.startProgrammer = function() {

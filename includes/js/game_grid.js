@@ -100,11 +100,12 @@ GameGrid.prototype.update = function(input) {
             if(self.levelInfo.waves.length > 0)
                self.currentPhase = self.levelInfo.waves.shift();
          }
+         else {
+            self.enemyTimer = self.currentPhase.delay;
 
-         self.enemyTimer = self.currentPhase.delay;
-
-         self.addObject(new self.currentPhase.enemy({x: self.width, y: Math.ceil(Math.random() * self.height)}, self, self.attrs[SLOW_ENEMIES]), true)
-         self.enemies ++;
+            self.addObject(new self.currentPhase.enemy({x: self.width, y: Math.ceil(Math.random() * self.height)}, self, self.attrs[SLOW_ENEMIES]), true)
+            self.enemies ++;
+         }
       }
 
       self.update(input);
@@ -116,7 +117,7 @@ GameGrid.prototype.wonGame = function() {
    self.paused = true;
 
    window.requestAnimationFrame(function() {
-      self.manager.startProgrammer()
+      self.manager.wonLevel()
    });
 }
 
@@ -148,10 +149,13 @@ GameGrid.prototype.addObject = function(object, toArray) {
    document.querySelector(".shooter-tile-container").appendChild(object.getDiv());
 }
 
-GameGrid.prototype.removeObject = function(object) {
+GameGrid.prototype.removeObject = function(object, removeAnEnemy) {
    var ind = this.objects.indexOf(object);
    if(ind > -1)
       this.objects.splice(ind, 1);
+
+   if(removeAnEnemy)
+      this.enemies --;
 
    document.querySelector(".shooter-tile-container").removeChild(object.getDiv())
 }

@@ -150,13 +150,13 @@ function BasicEnemy(position, world, slow) {
 
 BasicEnemy.prototype.update = function() {
    if(this.slow)
-      this.move({x: -1 / (this.slow + 1), y: 0})
+      this.move({x: -0.75 / (this.slow + 1), y: 0})
    else
       this.move({x: -1, y: 0})
 
    if(this.position.x == 1) {
-      this.world.takeAHit(1200);
-      this.world.removeObject(this);
+      this.world.takeAHit(200);
+      this.world.removeObject(this, true);
    }
 }
 
