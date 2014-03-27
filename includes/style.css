@@ -33,11 +33,6 @@ a {
   cursor: pointer;
 }
 
-strong {
-  font-weight: bold;
-  text-decoration: underline;
-}
-
 .heading:after {
   content: "";
   display: block;
@@ -150,6 +145,7 @@ strong {
         border-radius: 5px;
         float: left;
       }
+        .grid-cell-crucial { background: rgba(100, 100, 100, 0.55); }
         .grid-cell:last-child { margin-right: 0; }
           .grid-cell.hover-active { background: #60D6a9; }
           .grid-cell.hover-inactive { background: none; }
@@ -241,11 +237,9 @@ strong {
           .program-drawer li.selected .grid-picture { background: rgba(0, 0, 0, 0.4); }
 
         .program-drawer li .title {
-          font-weight: bold;
           font-size: 22px;
         }
         .program-drawer li .description {
-          font-weight: bold;
           font-size: 16px;
         }
         .program-drawer li .grid-picture {
@@ -269,6 +263,12 @@ strong {
               width: 22px;
               height: 100%;
             }
+          .program-drawer li .grid-picture-3x4 .grid-row:first-child { margin-top: 9px; }
+          .program-drawer li .grid-picture-3x4 .grid-row { height: 16px; margin-left:1px; }
+          .program-drawer li .grid-picture-3x4 .grid-cell {
+            width: 16px;
+            height: 100%;
+          }
           .program-drawer li .grid-picture-4x4 .grid-row { height: 16px; }
             .program-drawer li .grid-picture-4x4 .grid-cell {
               width: 16px;

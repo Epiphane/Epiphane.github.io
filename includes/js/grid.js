@@ -43,7 +43,7 @@ Grid.prototype.buildDiagonal = function(row) {
 
       for(var col = 0; col < self.size && row >= 0; row -- && col ++) {
          if (row < self.size) {
-            newTile = new GridCell(self, { x: col, y: row });
+            newTile = new GridCell(self, { x: col, y: row }, row == 2);
             self.cells[row].push(newTile)
 
             $(".grid-container").find(".grid-row:eq("+row+")")[0].appendChild(newTile.getDiv());
@@ -68,16 +68,14 @@ Grid.prototype.runProgram = function(step, callback) {
    }
 
    var self = this;
+   var changed = false;
 
    window.requestAnimationFrame(function() {
-      var changed = self.iterate()
+      self.programs.forEach(function(program) {
+         program.testValid();
+      });
 
-      if(changed) {
-         return self.runProgram(step - 1, callback)
-      }
-      else {
-         self.disappear(callback);
-      }
+      self.disappear(callback);
    });
 }
 
@@ -135,7 +133,7 @@ Grid.prototype.hideDiagonal = function(row) {
    });
 }
 
-Grid.prototype.iterate = function() {
+Grid.prototype.iterateLife = function() {
    var self = this;
 
    this.eachCell(function(x, y, cell) {
@@ -192,7 +190,7 @@ Grid.prototype.hover = function(position) {
       for(var row = py; row < py + height; row ++) {
          for(var col = px; col < px + width; col ++) {
             if(col >= 0 && row >= 0 &&
-                row < this.size && col < this.size) {
+                row < this.size && col < this.size && row != 2) {
                this.cells[row][col].setHover(this.program.map[row - py][col - px] + 1);
             }
          }
@@ -213,7 +211,7 @@ Grid.prototype.placeProgram = function(position) {
       var cellsToWatch = [];
       for(var row = py; row < py + height; row ++) {
          for(var col = px; col < px + width; col ++) {
-            if(!this.cells[row][col].active && this.program.map[row - py][col - px])
+            if(!this.cells[row][col].active && this.program.map[row - py][col - px] && row != 2)
                this.cells[row][col].toggle(true);
             else
                this.cells[row][col].setHover(0);
@@ -226,6 +224,10 @@ Grid.prototype.placeProgram = function(position) {
       this.programs.push(programBack)
       var gameContainer = document.querySelector(".game-container")
       gameContainer.appendChild(programBack.getDiv())
+
+      this.programs.forEach(function(program) {
+         program.testValid();
+      });
 
       this.program = null;
       angular.element($(".program-drawer")).scope().deselect()

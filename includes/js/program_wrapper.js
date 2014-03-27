@@ -42,8 +42,8 @@ ProgramWrapper.prototype.testValid = function() {
       score += cell.active ? 1 : 0;
    });
 
-   if(this.valid ^ score >= this.program.required) {
-      this.valid = (score >= this.program.required);
+   if(this.valid ^ score == this.program.required) {
+      this.valid = (score == this.program.required);
 
       if(this.valid) {
          this.div.classList.remove("program-back-invalid");

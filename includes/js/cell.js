@@ -1,8 +1,7 @@
-function GridCell(grid, position, element) {
+function GridCell(grid, position, crucial) {
    var self = this;
 
    this.position = position;
-   this.element = element;
 
    this.active = false;
    this.wasActive = false;
@@ -13,6 +12,9 @@ function GridCell(grid, position, element) {
 
    this.tile = document.createElement("div");
    this.tile.setAttribute("class", "grid-cell grid-cell-dynamic grid-cell-new");
+   if(this.crucial = crucial)
+      this.tile.classList.add("grid-cell-crucial")
+
    $(this.tile).click(function() { grid.placeProgram(position); });
    $(this.tile).mouseenter(function() { grid.hover(position); });
 }
