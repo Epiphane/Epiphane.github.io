@@ -1,6 +1,6 @@
 var grid;
 
-function GameManager(size, InputManager, ProgramDrawer) {
+function GameManager(size, InputManager, LevelManager, ProgramDrawer) {
    var self = this;
 
    this.programs = [
@@ -26,6 +26,8 @@ function GameManager(size, InputManager, ProgramDrawer) {
 
    this.size         = size; // Size of the grid
    this.inputManager = new InputManager;
+
+   this.levels = new LevelManager;
 
    this.inputManager.on("runProgram", this.runProgram.bind(this));
    this.inputManager.on("pause", this.pause.bind(this));
@@ -56,7 +58,7 @@ GameManager.prototype.runProgram = function() {
 
 GameManager.prototype.startShooter = function(attrs) {
    $(".game-container").animate({"height": "292px"})
-   this.shooterGrid = new GameGrid(52, 21, this, attrs, this.inputManager.keys);
+   this.shooterGrid = new GameGrid(52, 21, this, attrs, this.inputManager.keys, this.levels.getCurrentLevel());
 }
 
 GameManager.prototype.startProgrammer = function() {

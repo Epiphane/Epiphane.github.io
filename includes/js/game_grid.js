@@ -2,9 +2,13 @@
  * Created by ThomasSteinke on 3/25/14.
  */
 
-function GameGrid(width, height, gameManager, attrs, keys) {
+function GameGrid(width, height, gameManager, attrs, keys, level) {
    var VISIBLE = 0;
    var SPREAD = 2;
+
+   this.levelInfo = level.getInfo();
+   this.currentPhase = this.levelInfo.waves.shift();
+   this.enemyTimer = this.currentPhase.delay + 100;
 
    var self = this;
    this.paused = false;
@@ -14,11 +18,11 @@ function GameGrid(width, height, gameManager, attrs, keys) {
 
    this.width = width;
    this.height = height;
-   this.enemyTimer = 100;
 
    this.health = width * height;
 
    this.objects = [];
+   this.enemies = 0;
 
    this.cellsToKill = [];
    this.cells = [];
@@ -51,6 +55,11 @@ GameGrid.prototype.update = function(input) {
    window.requestAnimationFrame(function() {
       if(self.paused)
          return;
+
+      if(self.currentPhase.amount <= 0 && self.enemies <= 0 && self.levelInfo.waves.length == 0) {
+         self.wonGame()
+         return;
+      }
 
       var delay = !self.attrs[REALTIME];
 
@@ -87,12 +96,27 @@ GameGrid.prototype.update = function(input) {
       });
 
       if(self.enemyTimer-- < 0) {
-         self.enemyTimer = 100;
+         if(self.currentPhase.amount-- <= 0) {
+            if(self.levelInfo.waves.length > 0)
+               self.currentPhase = self.levelInfo.waves.shift();
+         }
 
-         self.addObject(new BasicEnemy({x: self.width, y: Math.ceil(Math.random() * self.height)}, self, self.attrs[SLOW_ENEMIES]), true)
+         self.enemyTimer = self.currentPhase.delay;
+
+         self.addObject(new self.currentPhase.enemy({x: self.width, y: Math.ceil(Math.random() * self.height)}, self, self.attrs[SLOW_ENEMIES]), true)
+         self.enemies ++;
       }
 
       self.update(input);
+   });
+}
+
+GameGrid.prototype.wonGame = function() {
+   var self = this;
+   self.paused = true;
+
+   window.requestAnimationFrame(function() {
+      self.manager.startProgrammer()
    });
 }
 
@@ -195,6 +219,8 @@ GameGrid.prototype.move = function(direction) {
 
 GameGrid.prototype.eachObject = function(callback) {
    for(var o = 0; o < this.objects.length; o ++)
-      if(callback(this.objects[o]) == -1)
+      if(callback(this.objects[o]) == -1) {
+         this.enemies --;
          o --;
+      }
 }

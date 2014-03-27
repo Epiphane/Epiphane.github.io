@@ -84,6 +84,8 @@ Grid.prototype.appear = function() {
    var self = this;
 
    setTimeout(function() {
+      $(".shooter-grid-container").empty()
+      $(".shooter-tile-container").empty()
       $(".game-container").animate({"height": "490px"})
       $(".program-back").fadeIn();
       $(".program-drawer").fadeIn();
