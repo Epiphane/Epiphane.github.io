@@ -141,7 +141,7 @@ BasicEnemy.prototype.constructor = BasicEnemy;
 function BasicEnemy(position, world, slow) {
    this.world = world;
    this.health = 2;
-   this.damage = 50;
+   this.damage = 60;
    this.initDiv(position);
    this.updatePosition(position)
 
