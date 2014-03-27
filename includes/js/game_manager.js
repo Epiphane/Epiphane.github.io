@@ -31,9 +31,7 @@ GameManager.prototype.runProgram = function() {
 }
 
 GameManager.prototype.startShooter = function(attrs) {
-   this.shooterGrid = new GameGrid(52, 21, this, attrs);
-
-   this.shooterGrid.update(this.inputManager.keys)
+   this.shooterGrid = new GameGrid(52, 21, this, attrs, this.inputManager.keys);
 }
 
 GameManager.prototype.startProgrammer = function() {

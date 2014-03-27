@@ -2,9 +2,9 @@
  * Created by ThomasSteinke on 3/25/14.
  */
 
-function GameGrid(width, height, gameManager, attrs) {
-   var VISIBLE = 1;
-   var REALTIME = 0;
+function GameGrid(width, height, gameManager, attrs, keys) {
+   var VISIBLE = 0;
+   var REALTIME = 1;
 
    var self = this;
    this.paused = false;
@@ -24,9 +24,14 @@ function GameGrid(width, height, gameManager, attrs) {
    this.cells = [];
    this.build();
 
+   if(!this.attrs[VISIBLE])
+      document.querySelector(".shooter-tile-container").style.setProperty("opacity", "0.2")
+
    window.requestAnimationFrame(function() {
       self.ship = new PlayerShip({x: 1, y: 7}, self)
       self.addObject(self.ship, false)
+
+      self.update(keys)
    })
 }
 
@@ -35,11 +40,15 @@ GameGrid.prototype.pause = function() {
 }
 
 GameGrid.prototype.update = function(input) {
+   var VISIBLE = 0;
+   var REALTIME = 1;
    var self = this;
 
    window.requestAnimationFrame(function() {
       if(self.paused)
          return;
+
+      var delay = !self.attrs[REALTIME];
 
       for(var x = 0; x < 3; x ++)
          if(self.cellsToKill.length > 0) {
@@ -48,12 +57,25 @@ GameGrid.prototype.update = function(input) {
          }
 
       for(var dir = 0; dir < 4; dir ++) {
-         if(input[dir])
-            self.ship.move(self.getVector(dir))
+         if(input[dir]) {
+            var vector = self.getVector(dir);
+            if(delay)
+               setTimeout(function() {
+                  self.ship.move(vector)
+               }, 200);
+            else
+               self.ship.move(vector)
+         }
       }
 
       if(input[4]) {
-         self.ship.shoot();
+         if(input[dir])
+            if(delay)
+               setTimeout(function() {
+                  self.ship.shoot();
+               }, 200);
+            else
+               self.ship.shoot();
       }
 
       self.objects.forEach(function(obj) {

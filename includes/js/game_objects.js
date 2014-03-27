@@ -80,11 +80,11 @@ PlayerShip.prototype.shoot = function() {
       var newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: 0})
       this.world.addObject(newBullet, true)
 
-      newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: 1})
-      this.world.addObject(newBullet, true)
-
-      newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: -1})
-      this.world.addObject(newBullet, true)
+//      newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: 1})
+//      this.world.addObject(newBullet, true)
+//
+//      newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: -1})
+//      this.world.addObject(newBullet, true)
 
       this.shootDelay = 5;
    }
@@ -114,8 +114,8 @@ PlayerBullet.prototype.update = function() {
       this.world.removeObject(this);
    else {
       this.world.eachObject(function(obj) {
-         if(self.position.x + 1 >= obj.position.x && self.position.y + 1 >= obj.position.y &&
-             self.position.x <= obj.position.x + 1 && self.position.y <= obj.position.y + 1) {
+         if(self.position.x + 0.5 >= obj.position.x && self.position.y + 0.5 >= obj.position.y &&
+             self.position.x <= obj.position.x + 0.5 && self.position.y <= obj.position.y + 0.5) {
             var shot = obj.getShot();
 
             if(shot > 0)
