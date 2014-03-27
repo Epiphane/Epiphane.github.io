@@ -22,7 +22,7 @@ GameObject.prototype.initDiv = function(position) {
 }
 
 GameObject.prototype.updatePosition = function(position) {
-   var TILE_WIDTH = 28
+   var TILE_WIDTH = 27
 
    this.position = {x: position.x, y: position.y};
    this.div.classList.remove(this.positionAttr);
@@ -81,14 +81,14 @@ function PlayerShip(position, world, spread) {
 
 PlayerShip.prototype.shoot = function() {
    if(this.shootDelay-- <= 0) {
-      var newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y + 0.25}, this.world, {x: 2, y: 0})
+      var newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y}, this.world, {x: 2, y: 0})
       this.world.addObject(newBullet, true)
 
       if(this.spread) {
-         newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y + 0.5}, this.world, {x: 2, y: 1})
+         newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y + 0.25}, this.world, {x: 2, y: 1})
          this.world.addObject(newBullet, true)
 
-         newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y}, this.world, {x: 2, y: -1})
+         newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y - 0.25}, this.world, {x: 2, y: -1})
          this.world.addObject(newBullet, true)
       }
 

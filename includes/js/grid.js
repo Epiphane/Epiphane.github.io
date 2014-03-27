@@ -209,7 +209,7 @@ Grid.prototype.placeProgram = function(position) {
       var px = position.x - Math.floor(width / 2);
       var py = position.y - Math.floor(height / 2);
 
-      if(px < 0 || py < 0 || px >= this.size || py >= this.size)
+      if(px < 0 || py < 0 || px + width > this.size || py + height > this.size)
          return false;
 
       var cellsToWatch = [];
