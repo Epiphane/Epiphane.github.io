@@ -46,7 +46,14 @@ function GameManager(size, InputManager, LevelManager, ProgramDrawer) {
 
 // Set up the game
 GameManager.prototype.setup = function () {
-   this.grid = new Grid(this.size);
+   var self = this;
+   self.grid = new Grid(self.size);
+
+   $(".game-message").find(".message")[0].innerHTML = "Level 1"
+   $(".game-message").fadeIn()
+   $(".see-program-button").click(function() {
+      $(".game-message").fadeOut()
+   });
 };
 
 GameManager.prototype.runProgram = function() {
@@ -73,9 +80,9 @@ GameManager.prototype.wonLevel = function() {
 }
 
 GameManager.prototype.wonGame = function() {
+   $(".game-message").find(".message")[0].innerHTML = "You win!!"
    $(".game-message").fadeIn()
    $(".see-program-button").click(function() {
-      $(".game-message").fadeOut()
       $(".program-drawer").hide();
       $(".game-container").animate({"width": "491px"})
    })
@@ -83,6 +90,8 @@ GameManager.prototype.wonGame = function() {
 
 GameManager.prototype.startProgrammer = function() {
    this.shooterGrid = null;
+   $(".game-message").find(".message")[0].innerHTML = "Level " + (this.levels.currentLevel + 1)
+   $(".game-message").fadeIn()
    this.grid.appear();
 }
 

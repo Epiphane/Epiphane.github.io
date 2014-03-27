@@ -115,6 +115,10 @@ a {
   .shooter-tile-container { position: absolute; }
     .shooter-tile-container .tile {
       position: absolute;
+      width: 25px;
+      height: 25px;
+      line-height: 25px;
+      text-align: center;
       /*-webkit-transition: 100ms ease-in-out;*/
       /*-moz-transition: 100ms ease-in-out;*/
       /*transition: 100ms ease-in-out;*/
@@ -125,9 +129,9 @@ a {
     .shooter-tile-container .player-ship { background: #FFBD00; }
     .shooter-tile-container .basic-enemy-ship { background: #FF0000; }
     .shooter-tile-container .player-bullet {
-      margin: 4px 2px;
-      width: 8px;
-      height: 4px;
+      margin: 8px 4px;
+      width: 12px;
+      height: 8px;
       background: #FF0000;
     }
   .grid-container { position: absolute; }

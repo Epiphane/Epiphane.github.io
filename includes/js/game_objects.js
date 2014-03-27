@@ -8,7 +8,7 @@ function GameObject(position, world) {
    if(!position)
       position = {x: 0, y: 0};
 
-   this.size = {w: 1, h: 1};
+   this.size = {w: 2, h: 2};
 
    this.position = position;
    this.initDiv(position);
@@ -76,18 +76,19 @@ function PlayerShip(position, world, spread) {
    this.spread = spread;
 
    this.div.classList.add("player-ship")
+   this.div.innerHTML = ":)"
 }
 
 PlayerShip.prototype.shoot = function() {
    if(this.shootDelay-- <= 0) {
-      var newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: 0})
+      var newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y + 0.25}, this.world, {x: 2, y: 0})
       this.world.addObject(newBullet, true)
 
       if(this.spread) {
-         newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: 1})
+         newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y + 0.5}, this.world, {x: 2, y: 1})
          this.world.addObject(newBullet, true)
 
-         newBullet = new PlayerBullet(this.position, this.world, {x: 2, y: -1})
+         newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y}, this.world, {x: 2, y: -1})
          this.world.addObject(newBullet, true)
       }
 
@@ -167,4 +168,18 @@ BasicEnemy.prototype.getShot = function() {
       return 2;
    }
    return 1;
+}
+
+Corrupter.prototype = new BasicEnemy({x: 0, y: 0});
+Corrupter.prototype.constructor = Corrupter;
+
+function Corrupter(position, world, slow) {
+   this.world = world;
+   this.health = 2;
+   this.initDiv(position);
+   this.updatePosition(position)
+
+   this.slow = slow;
+
+   this.div.classList.add("basic-enemy-ship")
 }

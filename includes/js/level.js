@@ -4,8 +4,8 @@
 
 function LevelManager() {
    this.levels = [
-      new Level([{enemy: BasicEnemy, delay: 100, amount: 1}]),
-      new Level([{enemy: BasicEnemy, delay: 100, amount: 10}])
+      new Level([{enemy: BasicEnemy, delay: 100, amount: 10}]),
+      new Level([{enemy: Corrupter, delay: 5, amount: 10}])
    ];
 
    this.currentLevel = 0;
