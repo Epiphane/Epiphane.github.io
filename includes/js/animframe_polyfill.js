@@ -22,6 +22,15 @@
     };
   //}
 
+   window.requestInGameAnimationFrame = function(callback, element) {
+      var currTime = new Date().getTime();
+      var timeToCall = Math.max(0, 50 - (currTime - lastTime));
+      var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+          timeToCall);
+      lastTime = currTime + timeToCall;
+      return id;
+   };
+
   if (!window.cancelAnimationFrame) {
     window.cancelAnimationFrame = function(id) {
       clearTimeout(id);

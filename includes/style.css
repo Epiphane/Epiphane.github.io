@@ -72,7 +72,7 @@ a {
   padding: 7px;
   border-radius: 5px;
   cursor: default;
-  width: 746px;
+  width: 730px;
   height: 486px;
   background: #408DD2;
   position: relative;
@@ -89,6 +89,45 @@ a {
     .program-back .tagline { display: none; }
     .program-back:hover .tagline { display:block; }
       .program-back .tagline .badge { float:right; }
+  .shooter-grid-container {
+    position: absolute;
+    width: 728px;
+  }
+    .shooter-grid-container .grid-row {
+      height: 12px;
+      margin-bottom: 2px;
+      clear:both;
+    }
+      .shooter-grid-container .grid-row:last-child { margin-bottom: 0 }
+    .shooter-grid-container .grid-cell,
+    .shooter-tile-container .grid-cell {
+      float: right;
+      margin-right: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 1px;
+      margin-left: 2px;
+    }
+      .shooter-grid-container .grid-cell:last-child { margin-left: 0 }
+
+  .shooter-tile-container { position: absolute; }
+    .shooter-tile-container .tile {
+      position: absolute;
+      /*-webkit-transition: 100ms ease-in-out;*/
+      /*-moz-transition: 100ms ease-in-out;*/
+      /*transition: 100ms ease-in-out;*/
+      /*-webkit-transition-property: -webkit-transform;*/
+      /*-moz-transition-property: -moz-transform;*/
+      /*transition-property: transform;*/
+    }
+    .shooter-tile-container .player-ship { background: #FFBD00; }
+    .shooter-tile-container .basic-enemy-ship { background: #FF0000; }
+    .shooter-tile-container .player-bullet {
+      margin: 4px 2px;
+      width: 8px;
+      height: 4px;
+      background: #FF0000;
+    }
   .grid-container { position: absolute; }
     .grid-row { margin-bottom: 5px; }
       .grid-row:last-child { margin-bottom: 0; }
@@ -158,8 +197,8 @@ a {
           -moz-animation-fill-mode: both;
         }
   .program-drawer {
-    width: 255px;
-    height: 486px;
+    width: 235px;
+    height: 470px;
     border-radius: 5px;
     float: right;
     position: relative;
@@ -178,7 +217,7 @@ a {
         line-height: 80px;
       }
       .program-drawer li {
-        width: 235px;
+        width: 215px;
         height: 80px;
         margin-bottom: 5px;
         border-radius: 5px;

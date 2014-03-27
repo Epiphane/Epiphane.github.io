@@ -35,12 +35,16 @@ GridCell.prototype.toggle = function(click) {
 }
 
 GridCell.prototype.appear = function() {
+   var self = this;
+
    this.tile.classList.add("grid-cell-new")
    this.tile.classList.remove("grid-cell-die")
 
    var newTile = this.tile.cloneNode(true)
    this.tile.parentNode.replaceChild(newTile, this.tile)
    this.tile = newTile;
+   $(this.tile).click(function() { self.grid.placeProgram(self.position); });
+   $(this.tile).mouseenter(function() { self.grid.hover(self.position); });
 }
 
 GridCell.prototype.disappear = function() {

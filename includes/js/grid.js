@@ -50,9 +50,9 @@ Grid.prototype.eachCell = function (callback) {
    }
 };
 
-Grid.prototype.runProgram = function(step) {
+Grid.prototype.runProgram = function(step, callback) {
    if(step == 0) {
-      this.disappear();
+      this.disappear(callback);
       return;
    }
 
@@ -62,10 +62,11 @@ Grid.prototype.runProgram = function(step) {
       var changed = self.iterate()
 
       if(changed) {
-         return self.runProgram(step - 1)
+         return self.runProgram(step - 1, callback)
       }
-      else
-         this.disappear();
+      else {
+         self.disappear(callback);
+      }
    });
 }
 
@@ -93,7 +94,7 @@ Grid.prototype.showDiagonal = function(row) {
    });
 }
 
-Grid.prototype.disappear = function() {
+Grid.prototype.disappear = function(callback) {
    var self = this;
 
    setTimeout(function() {
@@ -101,6 +102,11 @@ Grid.prototype.disappear = function() {
       $(".program-drawer").fadeOut();
       for(var row = 0; row < self.size * 2; row ++) {
          self.hideDiagonal(row)
+
+         if(row == self.size * 2 - 1)
+            window.requestAnimationFrame(function() {
+               callback();
+            })
       }
    }, 500);
 }
@@ -213,4 +219,14 @@ Grid.prototype.placeProgram = function(position) {
    else {
       this.cells[position.y][position.x].toggle(true);
    }
+}
+
+Grid.prototype.programAttributes = function() {
+   var attributes = [];
+
+   this.programs.forEach(function(program) {
+      program.setAttribute(attributes);
+   });
+
+   return attributes;
 }

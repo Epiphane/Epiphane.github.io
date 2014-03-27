@@ -1,11 +1,11 @@
 function ProgramCtrl($scope) {
    $scope.programs = [
-      {name: 'Rend.er', description: 'Visibility', selected: false, required: 6,
+      {id: 0, name: 'Rend.er', description: 'Visibility', selected: false, required: 6,
          map: [[0, 0, 1, 1],
                [0, 0, 1, 1],
                [1, 1, 0, 0],
                [1, 1, 0, 0]]},
-      {name: 'Tim.er', description: 'Realtime Movement', selected: false, required: 3,
+      {id: 1, name: 'Tim.er', description: 'Realtime Movement', selected: false, required: 3,
          map: [[0, 1, 0],
                [0, 1, 0],
                [0, 1, 0]]}];

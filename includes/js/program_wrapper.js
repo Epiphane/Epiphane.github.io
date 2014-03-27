@@ -55,3 +55,8 @@ ProgramWrapper.prototype.testValid = function() {
       }
    }
 }
+
+ProgramWrapper.prototype.setAttribute = function(attributes) {
+   if(!attributes[this.program.id])
+      attributes[this.program.id] = this.valid;
+}
