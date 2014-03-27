@@ -44,12 +44,12 @@ GameObject.prototype.move = function(direction) {
 
    if(newPos.x < 1)
       newPos.x = 1;
-   if(newPos.x > this.world.width)
-      newPos.x = this.world.width;
+   if(newPos.x + this.size.w - 1 > this.world.width)
+      newPos.x = this.world.width - this.size.w + 1;
    if(newPos.y < 1)
       newPos.y = 1;
-   if(newPos.y > this.world.height)
-      newPos.y = this.world.height;
+   if(newPos.y + this.size.h - 1 > this.world.height)
+      newPos.y = this.world.height - this.size.h + 1;
 
    this.updatePosition(newPos);
 }

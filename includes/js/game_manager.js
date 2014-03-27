@@ -1,5 +1,3 @@
-var grid;
-
 function GameManager(size, InputManager, LevelManager, ProgramDrawer) {
    var self = this;
 
@@ -33,6 +31,8 @@ function GameManager(size, InputManager, LevelManager, ProgramDrawer) {
    this.inputManager.on("pause", this.pause.bind(this));
    this.shooterGrid = null;
 
+   this.messageContainer = $(".game-message");
+
    this.setup();
 
    this.programDrawer = ProgramDrawer;
@@ -49,11 +49,11 @@ GameManager.prototype.setup = function () {
    var self = this;
    self.grid = new Grid(self.size);
 
-   $(".game-message").find(".title")[0].innerHTML = "Level 1"
-   $(".game-message").find(".message")[0].innerHTML = "Make sure you use Rend.er, or you won't be able to see well!"
-   $(".game-message").fadeIn()
+   this.messageContainer.find(".title")[0].innerHTML = "Level 1: " + self.levels.currentTitle();
+   this.messageContainer.find(".message")[0].innerHTML = self.levels.currentMessage();
+   this.messageContainer.fadeIn();
    $(".see-program-button").click(function() {
-      $(".game-message").fadeOut()
+      self.messageContainer.fadeOut();
    });
 };
 
@@ -63,50 +63,51 @@ GameManager.prototype.runProgram = function() {
    this.grid.runProgram(250, function() {
       self.startShooter(self.grid.programAttributes());
    });
-}
+};
 
 GameManager.prototype.startShooter = function(attrs) {
-   $(".game-container").animate({"height": "292px"})
+   $(".game-container").animate({"height": "292px"});
    this.shooterGrid = new GameGrid(52, 21, this, attrs, this.inputManager.keys, this.levels.getCurrentLevel());
-}
+};
 
 GameManager.prototype.wonLevel = function() {
    this.levels.currentLevel++;
    if(this.programs.length > 0)
-      this.availablePrograms.push(this.programs.shift())
+      this.availablePrograms.push(this.programs.shift());
    this.programDrawer.$apply();
    this.startProgrammer();
    if(this.levels.currentLevel == this.levels.levels.length)
       this.wonGame()
-}
+};
 
 GameManager.prototype.wonGame = function() {
-   $(".game-message").find(".title")[0].innerHTML = "You win!!"
-   $(".game-message").fadeIn()
+   this.messageContainer.find(".title")[0].innerHTML = "You win!!";
+   this.messageContainer.fadeIn();
    $(".see-program-button").click(function() {
       $(".program-drawer").hide();
-      $(".game-container").animate({"width": "491px"})
+      $(".game-container").animate({"width": "491px"});
    })
-}
+};
 
 GameManager.prototype.startProgrammer = function() {
    this.shooterGrid = null;
-   $(".game-message").find(".title")[0].innerHTML = "Level " + (this.levels.currentLevel + 1)
-   $(".game-message").fadeIn()
+   this.messageContainer.find(".title")[0].innerHTML = "Level " + (this.levels.currentLevel + 1) + ": " + this.levels.currentTitle();
+   this.messageContainer.find(".message")[0].innerHTML = this.levels.currentMessage();
+   this.messageContainer.fadeIn();
    this.grid.appear();
-}
+};
 
 GameManager.prototype.move = function(direction) {
    if(this.shooterGrid) {
       this.shooterGrid.move(this.getVector(direction))
    }
-}
+};
 
 GameManager.prototype.pause = function() {
    if(this.shooterGrid) {
-      this.shooterGrid.pause()
+      this.shooterGrid.pause();
    }
-}
+};
 
 // Get the vector representing the chosen direction
 GameManager.prototype.getVector = function (direction) {
