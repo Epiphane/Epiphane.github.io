@@ -28,7 +28,7 @@ function GameGrid(width, height, gameManager, attrs, keys, level) {
    this.cells = [];
    this.build();
 
-   if(!dontYellAtMe)
+   if(dontYellAtMe)
       console.log("You're good Elliot")
 
    $(".in-game-instructions").slideDown()
