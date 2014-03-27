@@ -2,6 +2,8 @@
  * Created by ThomasSteinke on 3/25/14.
  */
 
+var dontYellAtMe = true;
+
 function GameObject(position, world) {
    this.world = world;
 
@@ -120,13 +122,12 @@ PlayerBullet.prototype.update = function() {
       this.world.removeObject(this);
    else {
       this.world.eachObject(function(obj) {
-         if(self.position.x + self.size.w > obj.position.x && self.position.y + self.size.h > obj.position.y &&
-             self.position.x < obj.position.x + obj.size.w && self.position.y < obj.position.y + obj.size.h) {
+         if (self.position.y < obj.position.y + obj.size.h && self.position.x < obj.position.x + obj.size.w && self.position.y + self.size.h > obj.position.y && self.position.x + self.size.w > obj.position.x) {
             var shot = obj.getShot();
 
-            if(shot > 0)
+            if (shot > 0)
                self.world.removeObject(self);
-            if(shot == 2)
+            if (shot == 2)
                return -1;
 
          }

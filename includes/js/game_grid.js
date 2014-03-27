@@ -53,6 +53,9 @@ GameGrid.prototype.update = function(input) {
    var self = this;
 
    window.requestAnimationFrame(function() {
+      if(!dontYellAtMe)
+         console.log("REFRESH THE PAGE")
+
       if(self.paused)
          return;
 
