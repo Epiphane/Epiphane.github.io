@@ -22,10 +22,14 @@ LevelManager.prototype.getCurrentLevel = function() {
 };
 
 LevelManager.prototype.currentTitle = function() {
+   if(this.currentLevel == this.levels.length)
+      return "You win!"
    return this.levels[this.currentLevel].title
 };
 
 LevelManager.prototype.currentMessage = function() {
+   if(this.currentLevel == this.levels.length)
+      return "(Hooray!)"
    return this.levels[this.currentLevel].message
 };
 
