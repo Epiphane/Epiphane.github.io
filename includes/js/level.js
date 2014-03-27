@@ -29,7 +29,7 @@ LevelManager.prototype.currentTitle = function() {
 
 LevelManager.prototype.currentMessage = function() {
    if(this.currentLevel == this.levels.length)
-      return "(Hooray!)"
+      return "(Hooray)"
    return this.levels[this.currentLevel].message
 };
 
