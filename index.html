@@ -42,7 +42,7 @@
           <li class="run-button">
             <span>Run Program</span>
           </li>
-          <li class="program {{attr(program.selected, 'selected', '')}}" ng-repeat="program in programs" ng-click="select(this)">
+          <li class="program {{attr(program.selected, 'selected', '')}}" ng-repeat="program in setup(programs)" ng-click="select(this)">
             <div class="grid-picture grid-picture-{{gridSize(program)}}">
               <div class="grid-row" ng-repeat="row in program.map">
                 <div class="grid-cell {{attr(cell, 'grid-cell-active-flip', 'grid-cell-inactive')}}" ng-repeat="cell in row">
@@ -69,6 +69,7 @@
 
   <script type="text/javascript" src="./includes/js/program.js"></script>
   <script type="text/javascript" src="./includes/js/jquery.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <script type="text/javascript" src="./includes/js/animframe_polyfill.js"></script>
   <script type="text/javascript" src="./includes/js/cell.js"></script>
   <script type="text/javascript" src="./includes/js/grid.js"></script>

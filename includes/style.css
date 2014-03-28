@@ -93,8 +93,9 @@ a {
       .program-back .tagline .badge { float:right; }
   .shooter-grid-container {
     position: absolute;
-    width: 729px;
+    width: 727px;
   }
+    .shooter-tile-container .grid-row,
     .shooter-grid-container .grid-row {
       height: 25px;
       margin-bottom: 2px;
@@ -112,13 +113,19 @@ a {
     }
       .shooter-grid-container .grid-cell:last-child { margin-left: 0 }
 
-  .shooter-tile-container { position: absolute; }
+  .shooter-tile-container {
+    width: 727px;
+    height: 295px;
+    overflow: hidden;
+    position: absolute;
+  }
     .shooter-tile-container .tile {
       position: absolute;
       width: 25px;
       height: 25px;
       line-height: 25px;
       text-align: center;
+      margin: 0;
       /*-webkit-transition: 100ms ease-in-out;*/
       /*-moz-transition: 100ms ease-in-out;*/
       /*transition: 100ms ease-in-out;*/
@@ -134,6 +141,15 @@ a {
       height: 8px;
       background: #FF0000;
     }
+    .shooter-tile-container .king-corrupter-ship {
+      background: none;
+    }
+      .shooter-tile-container .king-corrupter-ship .tile {
+        position: static;
+        background: #FFBD00;
+        margin: 1px;
+      }
+      .shooter-tile-container .king-corrupter-ship .tile.none { background: none; }
   .grid-container { position: absolute; }
     .grid-row { margin-bottom: 5px; }
       .grid-row:last-child { margin-bottom: 0; }
@@ -152,7 +168,7 @@ a {
         float: left;
       }
         .grid-cell-crucial { background: rgba(100, 100, 100, 0.55); }
-        .grid-cell:last-child { margin-right: 0; }
+        .grid-cell:last-child { margin: 0; }
           .grid-cell.hover-active { background: #60D6a9; }
           .grid-cell.hover-inactive { background: none; }
         .grid-cell-active-flip {
@@ -197,6 +213,19 @@ a {
           -webkit-animation-fill-mode: both;
           -moz-animation-fill-mode: both;
         }
+        .grid-cell-corrupted { position: relative; }
+          .grid-cell-corrupted.corrupt-1 {
+            left: -20px;
+            top: -35px;
+          }
+          .grid-cell-corrupted.corrupt-2 {
+            left: -35px;
+            top: -10px;
+          }
+          .grid-cell-corrupted.corrupt-3 {
+            left: 10px;
+            top: -10px;
+          }
         .grid-cell-die {
           -webkit-animation: disappear 200ms ease 100ms;
           -moz-animation: disappear 200ms ease 100ms;
@@ -396,6 +425,7 @@ a {
     background: rgba(238, 228, 218, 0.95);
   }
 }
+
 
 @-webkit-keyframes fadeActive {
   0% {

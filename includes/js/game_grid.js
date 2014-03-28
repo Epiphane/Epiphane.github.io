@@ -143,7 +143,10 @@ GameGrid.prototype.loseGame = function() {
       if(self.cellsToKill.length > 0)
          self.loseGame()
       else {
-         self.manager.startProgrammer()
+         if(self.manager.levels.currentLevel == 1)
+            self.manager.corrupt();
+         else
+            self.manager.startProgrammer()
       }
    });
 }
@@ -198,6 +201,10 @@ GameGrid.prototype.build = function() {
          for(var row = 0; row < self.height; row ++) {
             var newTile = document.createElement("div");
             newTile.setAttribute("class", "grid-cell");
+            if(Math.random() < self.manager.corrupted) {
+               newTile.classList.add("grid-cell-corrupted");
+               newTile.classList.add("corrupt-" + Math.ceil(Math.random() * 3));
+            }
             self.cells[row].push(newTile)
 
             $(".shooter-grid-container").find(".grid-row:eq("+row+")")[0].appendChild(newTile);

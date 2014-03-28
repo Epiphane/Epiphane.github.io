@@ -1,4 +1,4 @@
-function GridCell(grid, position, crucial) {
+function GridCell(grid, position, corrupted) {
    var self = this;
 
    this.position = position;
@@ -12,10 +12,13 @@ function GridCell(grid, position, crucial) {
 
    this.tile = document.createElement("div");
    this.tile.setAttribute("class", "grid-cell grid-cell-dynamic grid-cell-new");
+   if(corrupted) {
+      this.tile.classList.add("grid-cell-corrupted");
+      this.tile.classList.add("corrupt-" + Math.ceil(Math.random() * 3));
+   }
    //if(this.crucial = crucial)
       //this.tile.classList.add("grid-cell-crucial")
 
-   $(this.tile).click(function() { grid.placeProgram(position); });
    $(this.tile).mouseenter(function() { grid.hover(position); });
 }
 
@@ -25,22 +28,35 @@ GridCell.prototype.toggle = function(click) {
    this.active = !this.active;
    var animStr = click ? "-flip" : "-fade"
 
-   if(this.active)
-     this.tile.setAttribute("class", "grid-cell grid-cell-active"+animStr);
-   else
-     this.tile.setAttribute("class", "grid-cell grid-cell-inactive"+animStr);
+   this.tile.classList.remove("grid-cell-inactive-fade");
+   this.tile.classList.remove("hover-active");
+   this.tile.classList.remove("hover-inactive");
+   if(this.active) {
+      this.tile.classList.remove("grid-cell-inactive-flip")
+      this.tile.classList.remove("grid-cell-inactive-fade")
+      this.tile.classList.add("grid-cell-active"+animStr)
+   }
+   else {
+      this.tile.classList.remove("grid-cell-active-flip")
+      this.tile.classList.remove("grid-cell-active-fade")
+      this.tile.classList.add("grid-cell-inactive"+animStr)
+   }
 
    var newTile = this.tile.cloneNode(true)
    this.tile.parentNode.replaceChild(newTile, this.tile)
    this.tile = newTile;
-   $(this.tile).click(function() { self.grid.placeProgram(self.position); });
    $(this.tile).mouseenter(function() { self.grid.hover(self.position); });
 }
 
-GridCell.prototype.appear = function() {
+GridCell.prototype.appear = function(corrupted) {
    var self = this;
 
-   this.tile.classList.add("grid-cell-new")
+   if(corrupted && Math.random() < corrupted) {
+      this.tile.classList.add("grid-cell-corrupted");
+      this.tile.classList.add("corrupt-" + Math.ceil(Math.random() * 3));
+   }
+   else
+      this.tile.classList.add("grid-cell-new")
    this.tile.classList.remove("grid-cell-die")
 
    var newTile = this.tile.cloneNode(true)
@@ -52,6 +68,7 @@ GridCell.prototype.appear = function() {
 
 GridCell.prototype.disappear = function() {
    this.tile.classList.remove("grid-cell-new")
+   this.tile.classList.remove("grid-cell-corrupted")
    this.tile.classList.add("grid-cell-die")
 
    var newTile = this.tile.cloneNode(true)

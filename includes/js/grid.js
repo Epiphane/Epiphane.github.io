@@ -3,11 +3,14 @@ function Grid(size) {
    this.programs = [];
 
    this.size = size;
+   this.corrupted = 0;
+   this.gridPosition = null;
 
    this.build();
 
    $(".in-game-instructions").slideUp()
    $(".clear-button").click(function() { self.build(self) })
+   $(".grid-container").click(function() { self.placeProgram(); });
 }
 
 // Build a grid of the specified size
@@ -15,13 +18,16 @@ Grid.prototype.build = function () {
    this.cells = [];
    this.program = null;
    while(this.programs.length > 0) {
-      var div = this.programs.shift().getDiv();
+      var prog = this.programs.shift();
+      prog.program.available ++;
+      var div = prog.getDiv();
 
       div.parentNode.removeChild(div)
    }
+   angular.element($(".program-drawer")).scope().$apply()
 
    var gridContainer = document.querySelector(".grid-container");
-   $(".grid-container").empty()
+   $(".grid-container").empty();
 
    for(var row = 0; row < this.size * 2; row ++) {
       if(row < this.size) {
@@ -44,7 +50,7 @@ Grid.prototype.buildDiagonal = function(row) {
 
       for(var col = 0; col < self.size && row >= 0; row -- && col ++) {
          if (row < self.size) {
-            newTile = new GridCell(self, { x: col, y: row }, row == 2);
+            newTile = new GridCell(self, { x: col, y: row }, self.corrupted);
             self.cells[row].push(newTile)
 
             $(".grid-container").find(".grid-row:eq("+row+")")[0].appendChild(newTile.getDiv());
@@ -80,7 +86,7 @@ Grid.prototype.runProgram = function(step, callback) {
    });
 }
 
-Grid.prototype.appear = function() {
+Grid.prototype.appear = function(corrupted) {
    var self = this;
 
    setTimeout(function() {
@@ -90,19 +96,19 @@ Grid.prototype.appear = function() {
       $(".program-back").fadeIn();
       $(".program-drawer").fadeIn();
       for(var row = 0; row < self.size * 2; row ++) {
-         self.showDiagonal(row)
+         self.showDiagonal(row, corrupted)
       }
       $(".in-game-instructions").slideUp()
    }, 500);
 }
 
-Grid.prototype.showDiagonal = function(row) {
+Grid.prototype.showDiagonal = function(row, corrupted) {
    var self = this;
 
    window.requestAnimationFrame(function() {
       for(var col = 0; col < self.size && row >= 0; row -- && col ++) {
          if (row < self.size) {
-            self.cells[row][col].appear()
+            self.cells[row][col].appear(corrupted)
          }
       }
    });
@@ -181,6 +187,8 @@ Grid.prototype.iterateLife = function() {
 }
 
 Grid.prototype.hover = function(position) {
+   this.gridPosition = position;
+
    if(this.program) {
       var width = this.program.map[0].length;
       var height = this.program.map.length;
@@ -202,12 +210,12 @@ Grid.prototype.hover = function(position) {
    }
 }
 
-Grid.prototype.placeProgram = function(position) {
-   if(this.program) {
+Grid.prototype.placeProgram = function() {
+   if(this.program && this.gridPosition) {
       var width = this.program.map[0].length;
       var height = this.program.map.length;
-      var px = position.x - Math.floor(width / 2);
-      var py = position.y - Math.floor(height / 2);
+      var px = this.gridPosition.x - Math.floor(width / 2);
+      var py = this.gridPosition.y - Math.floor(height / 2);
 
       if(px < 0 || py < 0 || px + width > this.size || py + height > this.size)
          return false;
@@ -233,14 +241,12 @@ Grid.prototype.placeProgram = function(position) {
          program.testValid();
       });
 
+      this.program.available--;
       this.program = null;
       angular.element($(".program-drawer")).scope().deselect()
       angular.element($(".program-drawer")).scope().$apply()
    }
-   else {
-      //this.cells[position.y][position.x].toggle(true);
-   }
-}
+};
 
 Grid.prototype.programAttributes = function() {
    var attributes = [];

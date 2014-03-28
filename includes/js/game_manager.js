@@ -1,27 +1,32 @@
 function GameManager(size, InputManager, LevelManager, ProgramDrawer) {
    var self = this;
 
-   this.programs = [
-      {id: 2, name: 'Sp.read', description: 'Bullet Spread', selected: false, required: 5,
-         map: [[0, 1, 0],
-            [0, 0, 1],
-            [1, 1, 1]]},
-      {id: 3, name: 'Gl.ue', description: 'Slower Enemies', selected: false, required: 6,
-         map: [[0, 1, 1, 0],
-            [1, 0, 0, 1],
-            [0, 1, 1, 0]]}];
+   this.programs = [];
 
    this.availablePrograms = [
-      {id: 0, name: 'Rend.er', description: 'Visibility', selected: false, required: 8,
+      {id: 0, name: 'Rend.er', description: 'Visibility', selected: false, required: 8, available: 1,
          map: [[0, 0, 1, 1],
             [0, 0, 1, 1],
             [1, 1, 0, 0],
             [1, 1, 0, 0]]},
-      {id: 1, name: 'Tim.er', description: 'Realtime Movement', selected: false, required: 3,
+      {id: 1, name: 'Tim.er', description: 'Realtime Movement', selected: false, required: 3, available: 1,
          map: [[0, 1, 0],
             [0, 1, 0],
-            [0, 1, 0]]}];
+            [0, 1, 0]]},
+      {id: 2, name: 'Sp.read', description: 'Bullet Spread', selected: false, required: 8, available: 0,
+         map: [[1, 1, 0],
+            [1, 0, 1],
+            [1, 1, 1]]},
+      {id: 3, name: 'Gl.ue', description: 'Slower Enemies', selected: false, required: 6, available: 0,
+         map: [[0, 1, 1, 0],
+            [1, 0, 0, 1],
+            [0, 1, 1, 0]]},
+      {id: 4, name: 'Str.dex', description: 'Damage up', selected: false, required: 8, available: 0,
+         map: [[1, 0, 0],
+            [1, 0, 1],
+            [1, 1, 1]]}];
 
+   this.corrupted = 0;
    this.size         = size; // Size of the grid
    this.inputManager = new InputManager;
 
@@ -67,18 +72,50 @@ GameManager.prototype.runProgram = function() {
 
 GameManager.prototype.startShooter = function(attrs) {
    $(".game-container").animate({"height": "292px"});
-   this.shooterGrid = new GameGrid(27, 11, this, attrs, this.inputManager.keys, this.levels.getCurrentLevel());
+   this.shooterGrid = new GameGrid(27, 11, this, attrs, this.inputManager.keys, this.levels.getCurrentLevel(), this.corrupted);
 };
 
 GameManager.prototype.wonLevel = function() {
-   this.levels.currentLevel++;
-   if(this.programs.length > 0)
-      this.availablePrograms.push(this.programs.shift());
+   var self = this;
+
+   var level = this.levels.levels[this.levels.currentLevel++];
+   for(var ndx = 0; ndx < level.unlock.length; ndx ++) {
+      var unlock = level.unlock[ndx]
+      this.availablePrograms[unlock.id].available += unlock.amt;
+   }
    this.programDrawer.$apply();
-   this.startProgrammer();
-   if(this.levels.currentLevel == this.levels.levels.length)
-      this.wonGame()
+   if(this.corruped > 0)
+      this.corrupted -= 0.05;
+
+   setTimeout(function() {
+      self.startProgrammer();
+      if(self.levels.currentLevel == self.levels.levels.length)
+         self.wonGame()
+   }, 500);
 };
+
+GameManager.prototype.corrupt = function() {
+   var self = this;
+
+   this.levels.currentLevel++;
+   this.corrupted = this.grid.corrupted = 0.5;
+   var gameContainer = $(".game-container");
+
+   gameContainer.animate({"background-color": "#000000"});
+   gameContainer.effect("shake");
+   gameContainer.animate({"background-color": "#FFFFFF"});
+   gameContainer.animate({"background-color": "#F33298"});
+   gameContainer.animate({"background-color": "#897F68"});
+   gameContainer.animate({"background-color": "#794165"});
+   gameContainer.effect("shake", {direction: "up"});
+   gameContainer.animate({"background-color": "#ABC6D5"});
+   gameContainer.animate({"background-color": "#FFFFFF"});
+   gameContainer.animate({"background-color": "#77FF77"});
+   gameContainer.effect("shake", {direction: "right", distance: 100});
+   gameContainer.animate({"background-color": "#000000"}, function() {
+      self.startProgrammer();
+   });
+}
 
 GameManager.prototype.wonGame = function() {
    this.messageContainer.find(".title")[0].innerHTML = "You win!!";
@@ -94,7 +131,7 @@ GameManager.prototype.startProgrammer = function() {
    this.messageContainer.find(".title")[0].innerHTML = "Level " + (this.levels.currentLevel + 1) + ": " + this.levels.currentTitle();
    this.messageContainer.find(".message")[0].innerHTML = this.levels.currentMessage();
    this.messageContainer.fadeIn();
-   this.grid.appear();
+   this.grid.appear(this.corrupted);
 };
 
 GameManager.prototype.move = function(direction) {
