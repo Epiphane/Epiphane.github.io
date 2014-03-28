@@ -4,27 +4,30 @@ function GameManager(size, InputManager, LevelManager, ProgramDrawer) {
    this.programs = [];
 
    this.availablePrograms = [
-      {id: 0, name: 'Rend.er', description: 'Visibility', selected: false, required: 8, available: 1,
-         map: [[0, 0, 1, 1],
-            [0, 0, 1, 1],
-            [1, 1, 0, 0],
-            [1, 1, 0, 0]]},
-      {id: 1, name: 'Tim.er', description: 'Realtime Movement', selected: false, required: 3, available: 1,
+      {id: 0, name: 'Rend.er', description: 'Visibility', selected: false, required: 7, available: 1,
+         map: [[0, 1, 1],
+            [1, 1, 1],
+            [1, 1, 0]]},
+      {id: 1, name: 'Tim.er', description: 'Realtime Movement', selected: false, required: 5, available: 1,
          map: [[0, 1, 0],
-            [0, 1, 0],
+            [1, 1, 1],
             [0, 1, 0]]},
       {id: 2, name: 'Sp.read', description: 'Bullet Spread', selected: false, required: 8, available: 0,
          map: [[1, 1, 0],
             [1, 0, 1],
             [1, 1, 1]]},
-      {id: 3, name: 'Gl.ue', description: 'Slower Enemies', selected: false, required: 6, available: 0,
-         map: [[0, 1, 1, 0],
-            [1, 0, 0, 1],
-            [0, 1, 1, 0]]},
+      {id: 3, name: 'Gl.ue', description: 'Slower Enemies', selected: false, required: 5, available: 0,
+         map: [[0, 1, 1],
+            [1, 0, 0],
+            [0, 1, 1]]},
       {id: 4, name: 'Str.dex', description: 'Damage up', selected: false, required: 8, available: 0,
          map: [[1, 0, 0],
             [1, 0, 1],
-            [1, 1, 1]]}];
+            [1, 1, 1]]},
+      {id: 5, name: 'Shr.ink', description: 'Smaller battlefield', selected: false, required: 3, available: 0,
+         map: [[0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]]}];
 
    this.corrupted = 0;
    this.size         = size; // Size of the grid
@@ -71,8 +74,11 @@ GameManager.prototype.runProgram = function() {
 };
 
 GameManager.prototype.startShooter = function(attrs) {
-   $(".game-container").animate({"height": "292px"});
-   this.shooterGrid = new GameGrid(27, 11, this, attrs, this.inputManager.keys, this.levels.getCurrentLevel(), this.corrupted);
+   if(!attrs[5])
+      attrs[5] = 0;
+   var height = 13 - attrs[5];
+   $(".game-container").animate({"height": 12 + height*26 + "px"});
+   this.shooterGrid = new GameGrid(27, height, this, attrs, this.inputManager.keys, this.levels.getCurrentLevel(), this.corrupted);
 };
 
 GameManager.prototype.wonLevel = function() {

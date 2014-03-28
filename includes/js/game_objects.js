@@ -60,7 +60,7 @@ GameObject.prototype.update = function() {
    console.log("No update for me!")
 }
 
-GameObject.prototype.getShot = function() {
+GameObject.prototype.getShot = function(damage) {
    return 0;
 }
 
@@ -71,11 +71,14 @@ GameObject.prototype.getDiv = function() {
 PlayerShip.prototype = new GameObject();
 PlayerShip.prototype.constructor = PlayerShip;
 
-function PlayerShip(position, world, spread) {
+function PlayerShip(position, world, spread, damage) {
    this.world = world;
    this.shootDelay = 0;
    this.updatePosition(position)
+   if(!spread)
+      spread = 0;
    this.spread = spread;
+   this.damage = damage / (spread * 2 + 1);
 
    this.div.classList.add("player-ship")
    if(this.world.manager.corrupted > 0.4)
@@ -92,22 +95,21 @@ function PlayerShip(position, world, spread) {
 
 PlayerShip.prototype.shoot = function() {
    if(this.shootDelay-- <= 0) {
-      var newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y}, this.world, {x: 2, y: 0})
+      var newBullet = new PlayerBullet(this.damage, {x: this.position.x + 0.5, y: this.position.y}, this.world, {x: 2, y: 0})
       this.world.addObject(newBullet, true)
 
-      console.log(this.spread)
       if(this.spread) {
-         newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y + 0.25}, this.world, {x: 2, y: 1})
+         newBullet = new PlayerBullet(this.damage, {x: this.position.x + 0.5, y: this.position.y + 0.25}, this.world, {x: 2, y: 1})
          this.world.addObject(newBullet, true)
 
-         newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y - 0.25}, this.world, {x: 2, y: -1})
+         newBullet = new PlayerBullet(this.damage, {x: this.position.x + 0.5, y: this.position.y - 0.25}, this.world, {x: 2, y: -1})
          this.world.addObject(newBullet, true)
 
          if(this.spread == 2) {
-            newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y + 0.1}, this.world, {x: 2, y: 0.5})
+            newBullet = new PlayerBullet(this.damage, {x: this.position.x + 0.5, y: this.position.y + 0.1}, this.world, {x: 2, y: 0.5})
             this.world.addObject(newBullet, true)
 
-            newBullet = new PlayerBullet({x: this.position.x + 0.5, y: this.position.y - 0.1}, this.world, {x: 2, y: -0.5})
+            newBullet = new PlayerBullet(this.damage, {x: this.position.x + 0.5, y: this.position.y - 0.1}, this.world, {x: 2, y: -0.5})
             this.world.addObject(newBullet, true)
          }
       }
@@ -119,7 +121,8 @@ PlayerShip.prototype.shoot = function() {
 PlayerBullet.prototype = new GameObject();
 PlayerBullet.prototype.constructor = PlayerBullet;
 
-function PlayerBullet(position, world, direction) {
+function PlayerBullet(damage, position, world, direction) {
+   this.damage = damage;
    this.initDiv(position);
 
    this.world = world;
@@ -139,7 +142,7 @@ PlayerBullet.prototype.update = function() {
       var removed = false;
       this.world.eachObject(function(obj) {
          if (self.position.y < obj.position.y + obj.size.h && self.position.x < obj.position.x + obj.size.w && self.position.y + self.size.h > obj.position.y && self.position.x + self.size.w > obj.position.x) {
-            var shot = obj.getShot();
+            var shot = obj.getShot(self.damage);
 
             if (shot > 0 && !removed) {
                self.world.removeObject(self);
@@ -187,8 +190,10 @@ BasicEnemy.prototype.update = function() {
    }
 };
 
-BasicEnemy.prototype.getShot = function() {
-   if(this.health-- <= 0) {
+BasicEnemy.prototype.getShot = function(damage) {
+   this.health -= damage;
+
+   if(this.health < 0) {
       this.world.removeObject(this);
 
       return 2;
@@ -231,6 +236,22 @@ BasicMovingEnemy.prototype.update = function() {
       this.world.removeObject(this, true);
    }
 };
+
+SuperCorrupter.prototype = new BasicMovingEnemy({x: 0, y: 0});
+SuperCorrupter.prototype.constructor = SuperCorrupter;
+
+function SuperCorrupter(position, world, slow) {
+   this.world = world;
+   this.health = 2;
+   this.damage = 10;
+   this.speed = -1.5;
+   this.initDiv(position);
+   this.updatePosition(position)
+
+   this.slow = slow;
+
+   this.div.classList.add("basic-enemy-ship")
+}
 
 BasicShootingEnemy.prototype = new BasicEnemy({x: 0, y: 0});
 BasicShootingEnemy.prototype.constructor = BasicShootingEnemy;
@@ -306,6 +327,57 @@ function Corrupter(position, world, slow) {
    this.div.classList.add("basic-enemy-ship")
 }
 
+TankEnemy.prototype = new BasicEnemy({x: 0, y: 0});
+TankEnemy.prototype.constructor = TankEnemy;
+
+function TankEnemy(position, world, slow) {
+   this.world = world;
+   this.health = 80;
+   this.damage = 120;
+   this.speed = -0.25;
+   this.position = position;
+
+   this.size = {w: 3, h: 5};
+
+   this.initDiv(this.position);
+   this.updatePosition(this.position)
+
+   this.slow = slow;
+}
+
+TankEnemy.prototype.initDiv = function(position) {
+   this.div = document.createElement("div");
+   this.positionAttr = "tile-position-" + position.x + "-" + position.y;
+   this.div.setAttribute("class", "grid-cell tile large-enemy-ship tank-enemy-ship");
+   this.div.classList.add(this.positionAttr);
+
+   var map = [
+      [0, 1, 0],
+      [0, 1, 1],
+      [1, 1, 1],
+      [0, 1, 1],
+      [0, 1, 0]
+   ];
+
+   var div, rowDiv;
+   for(var row = 0; row < map.length; row ++) {
+      rowDiv = document.createElement("div");
+      rowDiv.setAttribute("class", "grid-row");
+
+      for(var col = 0; col < map[0].length; col ++) {
+         div = document.createElement("div");
+         div.setAttribute("class", "grid-cell tile tank-enemy-ship");
+         if(!map[row][col])
+            div.classList.add("none")
+
+         rowDiv.appendChild(div)
+      }
+
+      rowDiv.style.setProperty("width", "82px")
+      this.div.appendChild(rowDiv)
+   }
+};
+
 KingCorrupter.prototype = new BasicEnemy({x: 0, y: 0});
 KingCorrupter.prototype.constructor = KingCorrupter;
 
@@ -322,13 +394,14 @@ function KingCorrupter(position, world, slow) {
 
    this.slow = slow;
 
+   this.div.classList.add("large-enemy-ship")
    this.div.classList.add("king-corrupter-ship")
 }
 
 KingCorrupter.prototype.initDiv = function(position) {
    this.div = document.createElement("div");
    this.positionAttr = "tile-position-" + position.x + "-" + position.y;
-   this.div.setAttribute("class", "grid-cell tile king-corrupter-ship");
+   this.div.setAttribute("class", "grid-cell tile large-enemy-ship king-corrupter-ship");
    this.div.classList.add(this.positionAttr);
 
    var map = [

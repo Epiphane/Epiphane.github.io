@@ -5,6 +5,11 @@
 function GameGrid(width, height, gameManager, attrs, keys, level) {
    var VISIBLE = 0;
    var SPREAD = 2;
+   var DMG = 4;
+
+   var damage = 1;
+   if(attrs[4])
+      damage += attrs[4];
 
    this.levelInfo = level.getInfo();
    this.currentPhase = this.levelInfo.waves.shift();
@@ -39,7 +44,7 @@ function GameGrid(width, height, gameManager, attrs, keys, level) {
       document.querySelector(".shooter-tile-container").style.setProperty("opacity", "1")
 
    window.requestAnimationFrame(function() {
-      self.ship = new PlayerShip({x: 1, y: 7}, self, attrs[SPREAD])
+      self.ship = new PlayerShip({x: 1, y: 7}, self, attrs[SPREAD], damage)
       self.addObject(self.ship, false)
 
       self.update(keys)
