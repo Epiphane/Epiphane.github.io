@@ -22,6 +22,9 @@ function GameGrid(width, height, gameManager, attrs, keys, level) {
 
    this.attrs = attrs;
 
+   if(!this.attrs[7])
+      this.attrs[7] = 0;
+
    this.width = width;
    this.height = height;
 
@@ -194,8 +197,13 @@ GameGrid.prototype.build = function() {
    $(".shooter-grid-container").empty();
    var gridContainer = document.querySelector(".shooter-grid-container");
 
+   var newRow = document.createElement("div")
+   newRow.setAttribute("class", "health-bar")
+
+   document.querySelector(".shooter-tile-container").appendChild(newRow)
+
    for(var row = 0; row < this.height; row ++) {
-      var newRow = document.createElement("div")
+      newRow = document.createElement("div")
       newRow.setAttribute("class", "grid-row")
       this.cells.push([])
 
@@ -217,11 +225,11 @@ GameGrid.prototype.build = function() {
          }
       });
    }
-}
+};
 
 GameGrid.prototype.takeAHit = function(damage) {
    var self = this;
-   damage /= this.attrs[7];
+   damage /= (this.attrs[7] + 1);
    this.health -= damage;
 
    while(damage-- > 0 && self.cells.length > 0) {

@@ -122,6 +122,13 @@ a {
     overflow: hidden;
     position: absolute;
   }
+    .shooter-tile-container .health-bar {
+      width: 727px;
+      height: 20px;
+      background: #000000;
+      position: absolute;
+      display: none;
+    }
     .shooter-tile-container .tile {
       position: absolute;
       width: 25px;

@@ -452,7 +452,7 @@ MiniKingCorrupter.prototype.constructor = MiniKingCorrupter;
 
 function MiniKingCorrupter(position, world, slow) {
    this.world = world;
-   this.health = 3000;
+   this.maxHealth = this.health = 3000;
    this.damage = 10;
 
    this.actionTimer = 0;
@@ -582,11 +582,18 @@ KingCorrupter.prototype.constructor = KingCorrupter;
 
 function KingCorrupter(position, world, slow) {
    this.world = world;
-   this.health = 200;
-   this.damage = 10;
-   this.position = {x: this.world.width + 1, y: 2}
+   this.maxHealth = this.health = 6000;
+   this.damage = 100;
 
-   this.size = {w: 3, h: 9};
+   this.actionTimer = 0;
+
+   this.size = {w: 6, h: 13};
+
+   this.center = (this.world.height - this.size.h) / 2;
+   this.position = {x: this.world.width - 5, y: this.center};
+   this.up = 0.1;
+
+   this.action = null;
 
    this.initDiv(this.position);
    this.updatePosition(this.position)
@@ -604,15 +611,19 @@ KingCorrupter.prototype.initDiv = function(position) {
    this.div.classList.add(this.positionAttr);
 
    var map = [
-      [0, 1, 0],
-      [0, 1, 1],
-      [1, 1, 1],
-      [0, 1, 1],
-      [1, 1, 0],
-      [0, 1, 1],
-      [1, 1, 1],
-      [0, 1, 1],
-      [0, 1, 0]
+      [0, 1, 0, 0, 1, 0],
+      [0, 1, 1, 1, 1, 0],
+      [0, 1, 1, 1, 1, 0],
+      [1, 1, 1, 1, 1, 1],
+      [0, 1, 1, 1, 1, 0],
+      [0, 1, 1, 1, 1, 0],
+      [1, 1, 0, 0, 1, 1],
+      [0, 1, 1, 1, 1, 0],
+      [0, 1, 1, 1, 1, 0],
+      [1, 1, 1, 1, 1, 1],
+      [0, 1, 1, 1, 1, 0],
+      [0, 1, 1, 1, 1, 0],
+      [0, 1, 0, 0, 1, 0]
    ];
 
    var div, rowDiv;
@@ -629,14 +640,38 @@ KingCorrupter.prototype.initDiv = function(position) {
          rowDiv.appendChild(div)
       }
 
-      rowDiv.style.setProperty("width", "82px")
+      rowDiv.style.setProperty("width", "162px")
       this.div.appendChild(rowDiv)
    }
 };
 
 KingCorrupter.prototype.update = function() {
-   if(this.position.x > this.world.width - 5)
-      this.move({x: -0.1, y: 0})
+   if(this.position.y > this.center)
+      this.up -= 0.001;
+   else
+      this.up += 0.001;
+   var move = {x: 0, y: this.up};
+
+   if(this.position.x > this.world.width - 7)
+      move.x = -0.02;
+   else {
+      this.actionTimer --;
+      if(this.actionTimer < 0) {
+         this.actionTimer = 750;
+
+         var action = Math.floor(Math.random() * 2);
+         if(action == 0)
+            this.action = this.setupCorrupterSquad();
+         else if(action == 1)
+            this.action = this.fireAway();
+      }
+
+      if(this.action)
+         this.action();
+
+   }
+
+   this.move(move)
 
    var ship = this.world.ship
    if(this.position.x == 1 ||
@@ -645,3 +680,52 @@ KingCorrupter.prototype.update = function() {
       this.world.takeAHit(this.damage);
    }
 };
+
+KingCorrupter.prototype.setupCorrupterSquad = function() {
+   var self = this;
+   this.duration = 500;
+
+   return function() {
+      if(--self.duration < 0)
+         self.action = null;
+
+      if(self.duration % 10 == 0) {
+         self.world.addObject(new SuperCorrupter({x: self.position.x, y: self.position.y}, self.world, self.world.attrs[3]), true)
+         self.world.enemies ++;
+         self.world.addObject(new SuperCorrupter({x: self.position.x, y: self.size.h + self.position.y}, self.world, self.world.attrs[3]), true)
+         self.world.enemies ++;
+      }
+   }
+};
+
+KingCorrupter.prototype.fireAway = function() {
+   var self = this;
+   this.duration = 500;
+
+   return function() {
+      if(self.duration-- < 0)
+         self.action = null;
+
+      //if(self.duration % 2 == 0) {
+         var newBullet = new EnemyBullet({x: this.position.x - 1, y: (self.duration) % self.size.h + self.position.y}, this.world, {x: -0.75, y: 0})
+         this.world.addObject(newBullet, true)
+      //}
+   }
+};
+
+MiniKingCorrupter.prototype.getShot = KingCorrupter.prototype.getShot = function(damage) {
+   if(this.health < 0)
+      return 0;
+
+   document.querySelector(".health-bar").style.setProperty("display", "block");
+   document.querySelector(".health-bar").style.setProperty("width", this.health / this.maxHealth * 727 + "px");
+
+   this.health -= damage;
+
+   if(this.health < 0) {
+      this.world.removeObject(this);
+
+      return 2;
+   }
+   return 1;
+}
