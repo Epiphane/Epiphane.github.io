@@ -32,7 +32,7 @@ function GameManager(size, InputManager, LevelManager, ProgramDrawer) {
          map: [[0, 0, 1],
             [0, 1, 1],
             [0, 0, 0]]},
-      {id: 7, name: 'Durabl.e', description: 'More Health to the mainframe', selected: false, required: 5, available: 1,
+      {id: 7, name: 'Durabl.e', description: 'More Health to the mainframe', selected: false, required: 5, available: 0,
          map: [[1, 0, 1],
             [1, 1, 1]]}];
 
