@@ -4,7 +4,9 @@ function ProgramCtrl($scope) {
    $scope.programSelectedCallback = function() { console.log("ow!") };
 
    $scope.gridSize = function(program) {
-      return program.map.length + 'x' + program.map[0].length;
+      var l = program.map.length < 3 ? 3 : program.map.length;
+      var w = program.map[0].length < 3 ? 3 : program.map[0].length;
+      return l + 'x' + w;
    };
 
    $scope.attr = function(boolean, on, off) {

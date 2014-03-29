@@ -27,7 +27,14 @@ function GameManager(size, InputManager, LevelManager, ProgramDrawer) {
       {id: 5, name: 'Shr.ink', description: 'Smaller battlefield', selected: false, required: 3, available: 0,
          map: [[0, 0, 0],
             [0, 0, 0],
-            [0, 0, 0]]}];
+            [0, 0, 0]]},
+      {id: 6, name: 'Hom.er', description: 'Homing bullets', selected: false, required: 5, available: 0,
+         map: [[0, 0, 1],
+            [0, 1, 1],
+            [0, 0, 0]]},
+      {id: 7, name: 'Durabl.e', description: 'More Health to the mainframe', selected: false, required: 5, available: 1,
+         map: [[1, 0, 1],
+            [1, 1, 1]]}];
 
    this.corrupted = 0;
    this.size         = size; // Size of the grid
@@ -76,8 +83,8 @@ GameManager.prototype.runProgram = function() {
 GameManager.prototype.startShooter = function(attrs) {
    if(!attrs[5])
       attrs[5] = 0;
-   var height = 13 - attrs[5];
-   $(".game-container").animate({"height": 12 + height*26 + "px"});
+   var height = 21 - 2 * attrs[5];
+   $(".game-container").animate({"height": height*27 + "px"});
    this.shooterGrid = new GameGrid(27, height, this, attrs, this.inputManager.keys, this.levels.getCurrentLevel(), this.corrupted);
 };
 
@@ -104,7 +111,7 @@ GameManager.prototype.corrupt = function() {
    var self = this;
 
    this.levels.currentLevel++;
-   this.corrupted = this.grid.corrupted = 0.5;
+   this.corrupted = this.grid.corrupted = 0.4;
    var gameContainer = $(".game-container");
 
    gameContainer.animate({"background-color": "#000000"});
